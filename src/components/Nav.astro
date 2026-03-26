@@ -1,0 +1,73 @@
+---
+type NavItem = {
+  href: string;
+  name: string;
+};
+
+const navItems: NavItem[] = [
+  {
+    href: "#work",
+    name: "work",
+  },
+  {
+    href: "#about",
+    name: "about",
+  },
+  {
+    href: "#contact",
+    name: "contact",
+  },
+];
+---
+
+<nav>
+  <a class="nav-logo" href="#">respicio.dev</a>
+  <ul class="nav-links">
+    {
+      navItems.map((item: NavItem) => {
+        return (
+          <li>
+            <a href={item.href}>{item.name}</a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>
+
+<style>
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    border-bottom: 0.5px solid var(--border);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+  }
+</style>
