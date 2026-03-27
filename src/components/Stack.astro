@@ -1,0 +1,70 @@
+---
+import SectionLayout from "../layouts/SectionLayout.astro";
+---
+
+<SectionLayout name="// stack" id="stack">
+  <p class="section-label">// stack</p>
+  <div class="stack-grid">
+    <div class="stack-item">
+      <span class="stack-name">React / Next.js</span>
+      <span class="stack-level primary">primary</span>
+    </div>
+    <div class="stack-item">
+      <span class="stack-name">TypeScript</span>
+      <span class="stack-level primary">primary</span>
+    </div>
+    <div class="stack-item">
+      <span class="stack-name">Svelte</span>
+      <span class="stack-level proficient">proficient</span>
+    </div>
+    <div class="stack-item">
+      <span class="stack-name">Tailwind CSS</span>
+      <span class="stack-level proficient">proficient</span>
+    </div>
+    <div class="stack-item">
+      <span class="stack-name">Node.js</span>
+      <span class="stack-level growing">growing</span>
+    </div>
+    <div class="stack-item">
+      <span class="stack-name">MongoDB</span>
+      <span class="stack-level growing">growing</span>
+    </div>
+  </div>
+</SectionLayout>
+
+<style>
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .stack-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--bg-white);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .stack-name {
+    font-size: 13px;
+  }
+
+  .stack-level {
+    font-family: var(--font-mono);
+    font-size: 10px;
+  }
+
+  .stack-level.primary {
+    color: var(--accent);
+  }
+  .stack-level.proficient {
+    color: var(--muted);
+  }
+  .stack-level.growing {
+    color: var(--subtle);
+  }
+</style>

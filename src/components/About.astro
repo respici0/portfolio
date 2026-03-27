@@ -1,0 +1,74 @@
+---
+import SectionLayout from "../layouts/SectionLayout.astro";
+
+type Info = {
+  label: string;
+  info: string;
+  extras?: string[];
+};
+
+const infoList: Info[] = [
+  {
+    label: "based in",
+    info: "Vancouver, WA",
+  },
+  {
+    label: "open to",
+    info: "Relocation (Orange County, CA)",
+    extras: ["remote · hybrid"],
+  },
+];
+---
+
+<SectionLayout name="// about" id="about">
+  <div class="about-grid">
+    {
+      infoList.map(({ label, info, extras }: Info) => (
+        <div class="about-card">
+          <p class="about-label">{label}</p>
+          <p class="about-val">{info}</p>
+          {extras && extras.map((extra) => <p class="about-val">{extra}</p>)}
+        </div>
+      ))
+    }
+
+    <!-- <div class="about-card">
+      <p class="about-label">experience</p>
+      <p class="about-val">7 years</p>
+    </div>
+    <div class="about-card">
+      <p class="about-label">focus</p>
+      <p class="about-val">Frontend → Fullstack</p>
+    </div>
+    <div class="about-card">
+      <p class="about-label">open to</p>
+      <p class="about-val">Hybrid or remote</p>
+    </div> -->
+  </div>
+</SectionLayout>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .about-card {
+    background: var(--bg-white);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0.5rem 1.25rem;
+  }
+
+  .about-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .about-val {
+    font-size: 14px;
+    font-weight: 500;
+  }
+</style>

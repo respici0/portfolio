@@ -1,0 +1,58 @@
+---
+import SectionLayout from "../layouts/SectionLayout.astro";
+---
+
+<section class="contact-section" id="contact">
+  <h2 class="contact-label">// let's connect</h2>
+  <h3>and build something wonderful.</h3>
+  <p>
+    I'm open to full-time roles. If something looks interesting, I'd love to
+    hear about it.
+  </p>
+  <a href="mailto:respicio.robert@gmail.com" class="contact-email"
+    >say hello ↗</a
+  >
+</section>
+
+<style>
+  .contact-section {
+    padding: 2.5rem 2rem 4rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .contact-section h2 {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .contact-section h3 {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-section p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    /* max-width: 400px; */
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-email {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .contact-email:hover {
+    text-decoration: underline;
+  }
+</style>

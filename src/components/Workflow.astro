@@ -1,0 +1,55 @@
+---
+import SectionLayout from "../layouts/SectionLayout.astro";
+---
+
+<SectionLayout name="// my workflow">
+  <div class="how-item">
+    <span class="how-num">01</span>
+    <p>
+      I treat performance as a feature, not a last-minute audit. Bundle size,
+      render cost, and load time are part of the design.
+    </p>
+  </div>
+  <div class="how-item">
+    <span class="how-num">02</span>
+    <p>
+      I push back on designs that don't hold up at edge cases — then I build
+      exactly what we agreed on.
+    </p>
+  </div>
+  <div class="how-item">
+    <span class="how-num">03</span>
+    <p>
+      I prefer fewer, well-chosen abstractions over clever code. The next
+      engineer who touches this should feel relief, not dread.
+    </p>
+  </div>
+</SectionLayout>
+
+<style>
+  .how-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .how-item:last-child {
+    border-bottom: none;
+  }
+
+  .how-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--subtle);
+    min-width: 24px;
+    padding-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .how-item p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+</style>
