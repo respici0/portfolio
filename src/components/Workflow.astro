@@ -1,9 +1,31 @@
 ---
 import SectionLayout from "../layouts/SectionLayout.astro";
+
+const values: string[] = [
+  "I'd rather write thoughtful, readable, self documenting code. When the code is clear, performance stops being an afterthought and starts being part of good design.",
+  "I care about two kinds of users, the people using the product and the developers building it. Better DevX means better systems, and better systems turn complexity into great UX.",
+  "When something catches my attention, whether a new technology or a bug, I get obsessed. I need to understand the why, not just the how.",
+  "Ambiguity doesn't stop me. I ask questions, figure it out as I go, and I'm usually right.",
+  "I'll speak up early if something isn't technically feasible.",
+  "I do my best work when I stay in flow. I value human connection but most things don't need a meeting to get there.",
+  "If someone has a better solution than what I came up with, I'd love to hear it. That's how I grow and how we build better things together.",
+  "I'm human. I make mistakes, I own them and learn from them.",
+];
 ---
 
-<SectionLayout name="// my workflow">
-  <div class="how-item">
+<SectionLayout name="// how i think">
+  {
+    values.map((value: string, index: number) => {
+      const order = String(index + 1).padStart(2, "0");
+      return (
+        <div class="how-item">
+          <span class="how-num">{order}</span>
+          <p>{value}</p>
+        </div>
+      );
+    })
+  }
+  <!-- <div class="how-item">
     <span class="how-num">01</span>
     <p>
       I treat performance as a feature, not a last-minute audit. Bundle size,
@@ -23,7 +45,7 @@ import SectionLayout from "../layouts/SectionLayout.astro";
       I prefer fewer, well-chosen abstractions over clever code. The next
       engineer who touches this should feel relief, not dread.
     </p>
-  </div>
+  </div> -->
 </SectionLayout>
 
 <style>
