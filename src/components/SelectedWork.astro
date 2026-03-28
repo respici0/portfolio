@@ -1,30 +1,67 @@
 ---
 import SectionLayout from "../layouts/SectionLayout.astro";
+
+type Project = {
+  title: string;
+  year: string;
+  tag: string;
+  description: string;
+  links: {
+    type: "case study" | "live";
+    url?: string;
+  }[];
+  tech: string[];
+};
+
+const projects: Project[] = [
+  {
+    title: "Campaign Management Dashboard",
+    year: "2022 - 2024",
+    tag: "Fetch Rewards",
+    description: "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
+    
+    links: [
+      {
+        type: "case study",
+      },
+    ],
+    tech: [
+      "sveltekit", "typescript", "rest api", "connect rpc", "protobuf", "tailwindcss", "sst", "aws",
+    ],
+  },
+];
 ---
 
 <SectionLayout name="// selected work" id="work">
   <!-- <div class="project-row" onclick="toggleCaseStudy('fetch')"> -->
-  <div class="project-row">
+   {projects.map(({title, year, tag, description, links, tech}: Project) => (
+    <div class="project-row">
     <div class="project-meta">
       <div class="project-meta-left">
-        <span class="tag">Fetch Rewards</span>
-        <span class="project-year">2022 — 2024</span>
+        <span class="tag">{tag}</span>
+        <span class="project-year">{year}</span>
       </div>
-      <span class="project-link" id="fetch-toggle">case study ↗</span>
+      <div class="project-meta-right">
+      {
+        links.map(({type, url}) => (
+          type === 'case study' ?
+         <button class="project-link" id="fetch-toggle">{type} ↗</button> 
+         : 
+         <a href={url} target="_blank" class="project-link">{type} ↗</a>
+        ))
+      }
+      </div>
     </div>
-    <p class="project-title">Campaign Management Dashboard</p>
+    <p class="project-title">{title}</p>
     <p class="project-desc">
-      Owned frontend architecture from scratch. Campaign launch time dropped
-      from days to minutes — zero regressions at go-live.
+      {description}
     </p>
     <div class="chip-row">
-      <span class="chip">Svelte</span>
-      <span class="chip">TypeScript</span>
-      <span class="chip">REST API</span>
+      {tech.map((item) => (<span class="chip">{item}</span>))}
     </div>
 
     <!-- CASE STUDY EXPANSION -->
-    <!-- <div class="case-study" id="case-study-fetch">
+     {/* <div class="case-study" id="case-study-fetch">
       <div class="cs-header">
         <div
           style="display:flex;gap:8px;margin-bottom:1.25rem;align-items:center;"
@@ -185,10 +222,12 @@ import SectionLayout from "../layouts/SectionLayout.astro";
           point.
         </p>
       </div>
-    </div> -->
+    </div>  */}
   </div>
-
-  <div class="project-row">
+   ))}
+   
+  
+  <!-- <div class="project-row">
     <div class="project-meta">
       <div class="project-meta-left">
         <span class="tag">Side project</span>
@@ -202,12 +241,15 @@ import SectionLayout from "../layouts/SectionLayout.astro";
       up — my first serious backend work.
     </p>
     <div class="chip-row">
-      <span class="chip">Next.js</span>
-      <span class="chip">MongoDB</span>
-      <span class="chip">Better Auth</span>
+      <span class="chip">next.js</span>
+      <span class="chip">typescript</span>
+      <span class="chip">mongodb</span>
+      <span class="chip">mongoose</span>
+      <span class="chip">better auth</span>
       <span class="chip">shadcn</span>
+      <span class="chip">tailwindcss</span>
     </div>
-  </div>
+  </div> -->
 </SectionLayout>
 
 <style>
@@ -233,6 +275,11 @@ import SectionLayout from "../layouts/SectionLayout.astro";
     gap: 8px;
     align-items: center;
   }
+  .project-meta-right {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
 
   .tag {
     font-family: var(--font-mono);
@@ -255,6 +302,9 @@ import SectionLayout from "../layouts/SectionLayout.astro";
     color: var(--accent);
     text-decoration: none;
     cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
   }
 
   .project-link:hover {
@@ -286,6 +336,7 @@ import SectionLayout from "../layouts/SectionLayout.astro";
     font-size: 11px;
     color: var(--muted);
     background: var(--chip-bg);
+    border: 0.5px solid #e0d9cf;
     padding: 2px 8px;
     border-radius: var(--radius-sm);
   }

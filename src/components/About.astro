@@ -3,27 +3,48 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 
 type Info = {
   label: string;
-  info: string;
-  extras?: string[];
+  info?: string;
+  chips?: string[];
+  full: boolean;
 };
 
 const infoList: Info[] = [
+  { label: "title", info: "Software Engineer, Frontend", full: false },
   {
     label: "experience",
     info: "7 years",
+    full: false,
   },
   {
     label: "focus",
     info: "Frontend → Fullstack",
+    full: false,
   },
   {
     label: "based in",
     info: "Vancouver, WA",
+    full: false,
   },
   {
     label: "open to",
-    info: "relocate (Orange County, CA)",
-    extras: ["remote · hybrid"],
+    info: "remote · hybrid · Relocation to Orange County, CA",
+    full: true,
+  },
+  {
+    label: "interests",
+    chips: [
+      "tech",
+      "tinkering",
+      "spoken word",
+      "poetry",
+      "travel",
+      "cooking",
+      "dining",
+      "outdoors",
+      "gaming",
+      "music",
+    ],
+    full: true,
   },
 ];
 ---
@@ -31,24 +52,20 @@ const infoList: Info[] = [
 <SectionLayout name="// about" id="about">
   <div class="about-grid">
     {
-      infoList.map(({ label, info, extras }: Info) => (
-        <div class="about-card">
+      infoList.map(({ label, info, chips, full }: Info) => (
+        <div class={full ? "about-card full" : "about-card"}>
           <p class="about-label">{label}</p>
-          <p class="about-val">{info}</p>
-          {extras && extras.map((extra) => <p class="about-val">{extra}</p>)}
+          {info && <p class="about-val">{info}</p>}
+          {chips && (
+            <div class="about-chips">
+              {chips.map((chip) => (
+                <span class="chip">{chip}</span>
+              ))}
+            </div>
+          )}
         </div>
       ))
     }
-
-    <!-- <div class="about-card">
-      <p class="about-label">experience</p>
-      <p class="about-val">7 years</p>
-    </div>
-    <div class="about-card">
-      <p class="about-label">focus</p>
-      <p class="about-val">Frontend → Fullstack</p>
-    </div>
-    -->
   </div>
 </SectionLayout>
 
@@ -66,6 +83,10 @@ const infoList: Info[] = [
     padding: 0.5rem 1.25rem;
   }
 
+  .about-card.full {
+    grid-column: span 2;
+  }
+
   .about-label {
     font-size: 12px;
     color: var(--muted);
@@ -75,5 +96,22 @@ const infoList: Info[] = [
     font-size: 14px;
     font-weight: 500;
     margin: auto;
+  }
+
+  .about-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--chip-bg);
+    border: 0.5px solid #e0d9cf;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
   }
 </style>
