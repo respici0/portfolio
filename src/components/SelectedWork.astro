@@ -32,9 +32,9 @@ const projects: Project[] = [
 ];
 ---
 
-<SectionLayout name="// selected work" id="work">
+<SectionLayout label="// selected work" description="curated, not exhaustive." id="work">
   <!-- <div class="project-row" onclick="toggleCaseStudy('fetch')"> -->
-   {projects.map(({title, year, tag, description, links, tech}: Project) => (
+   {projects.map(({ title, year, tag, description, links, tech }: Project) => (
     <div class="project-row">
     <div class="project-meta">
       <div class="project-meta-left">
@@ -225,9 +225,7 @@ const projects: Project[] = [
     </div>  */}
   </div>
    ))}
-   
-  
-  <!-- <div class="project-row">
+   {/* <div class="project-row">
     <div class="project-meta">
       <div class="project-meta-left">
         <span class="tag">Side project</span>
@@ -249,7 +247,7 @@ const projects: Project[] = [
       <span class="chip">shadcn</span>
       <span class="chip">tailwindcss</span>
     </div>
-  </div> -->
+  </div>  */}
 </SectionLayout>
 
 <style>

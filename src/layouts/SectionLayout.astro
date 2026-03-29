@@ -1,14 +1,19 @@
 ---
 interface Props {
-  name: string;
+  label: string;
+  description: string;
   id?: string;
 }
 
-const { name, id = "" } = Astro.props;
+const { label, description, id = "" } = Astro.props;
 ---
 
 <section class="section" {id}>
-  <h2 class="section-label">{name}</h2>
+  <div class="section-header">
+    <span class="section-label">{label}</span>
+    <span class="section-desc">{description}</span>
+  </div>
+  <!-- <h2 class="section-label">{name}</h2> -->
   <slot />
 </section>
 
@@ -20,12 +25,25 @@ const { name, id = "" } = Astro.props;
     margin: 0 auto;
   }
 
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+
   .section-label {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--accent);
     letter-spacing: 0.08em;
-    margin-bottom: 1rem;
-    display: block;
+    display: inline;
+    white-space: nowrap;
+  }
+
+  .section-desc {
+    font-size: 11px;
+    color: #a89f94;
+    line-height: 1.5;
   }
 </style>

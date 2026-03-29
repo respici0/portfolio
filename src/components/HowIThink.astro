@@ -13,7 +13,11 @@ const values: string[] = [
 ];
 ---
 
-<SectionLayout name="// how i think" id="thinking">
+<SectionLayout
+  label="// how i think"
+  description="a peek inside my brain."
+  id="thinking"
+>
   {
     values.map((value: string, index: number) => {
       const order = String(index + 1).padStart(2, "0");

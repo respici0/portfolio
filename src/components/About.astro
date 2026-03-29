@@ -34,7 +34,12 @@ const infoList: Info[] = [
   {
     label: "currently building",
     info: "Next Steps - Job Tracking App",
-    full: true,
+    full: false,
+  },
+  {
+    label: "currently learning",
+    info: "Astro",
+    full: false,
   },
   {
     label: "currently reading",
@@ -87,7 +92,11 @@ const infoList: Info[] = [
 ];
 ---
 
-<SectionLayout name="// about" id="about">
+<SectionLayout
+  label="// about"
+  description="more than a stack list."
+  id="about"
+>
   <div class="about-grid">
     {
       infoList.map(({ label, info, chips, full }: Info) => (
