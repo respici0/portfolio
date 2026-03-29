@@ -1,7 +1,7 @@
 ---
 interface Props {
   label: string;
-  description: string;
+  description?: string;
   id?: string;
 }
 
@@ -11,9 +11,8 @@ const { label, description, id = "" } = Astro.props;
 <section class="section" {id}>
   <div class="section-header">
     <span class="section-label">{label}</span>
-    <span class="section-desc">{description}</span>
+    {description && <span class="section-desc">{description}</span>}
   </div>
-  <!-- <h2 class="section-label">{name}</h2> -->
   <slot />
 </section>
 

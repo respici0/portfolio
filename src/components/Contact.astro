@@ -1,5 +1,6 @@
 ---
 import type { AstroComponentFactory } from "astro/runtime/server/render/astro/index.js";
+import SectionLayout from "../layouts/SectionLayout.astro";
 import Github from "./icons/Github.astro";
 import LinkedIn from "./icons/LinkedIn.astro";
 
@@ -26,8 +27,7 @@ const links: Link[] = [
 ];
 ---
 
-<section class="contact-section" id="contact">
-  <span class="contact-label">// let's connect</span>
+<SectionLayout label="// let's connect" id="contact">
   <h3>and build something wonderful.</h3>
   <p>
     I'm open to full-time roles. If something looks interesting, I'd love to
@@ -47,67 +47,53 @@ const links: Link[] = [
       ))
     }
   </div>
+</SectionLayout>
 
-  <style>
-    .contact-section {
-      padding: 2.5rem 2rem 4rem;
-      max-width: 720px;
-      margin: 0 auto;
-    }
+<style>
+  h3 {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
 
-    .contact-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      margin-bottom: 1rem;
-    }
+  p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
 
-    .contact-section h3 {
-      font-size: 24px;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-    }
+  .contact-email {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent);
+    text-decoration: none;
+  }
 
-    .contact-section p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
+  .contact-email:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+  }
 
-    .contact-email {
-      font-family: var(--font-mono);
-      font-size: 14px;
-      color: var(--accent);
-      text-decoration: none;
-    }
+  .link-cta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
 
-    .contact-email:hover {
-      color: var(--accent-hover);
-      text-decoration: underline;
-    }
+  .github,
+  .linkedIn {
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+  }
 
-    .link-cta {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+  .github:hover {
+    color: #24292f;
+  }
 
-    .github,
-    .linkedIn {
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-    }
-
-    .github:hover {
-      color: #24292f;
-    }
-
-    .linkedIn:hover {
-      color: #0a66c2;
-    }
-  </style>
-</section>
+  .linkedIn:hover {
+    color: #0a66c2;
+  }
+</style>
