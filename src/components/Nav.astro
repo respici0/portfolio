@@ -68,6 +68,16 @@ const navItems: NavItem[] = [
       hamburger.setAttribute("aria-expanded", "false");
     });
   });
+
+  window.addEventListener("click", (e) => {
+    if (
+      !navLinks.contains(e.target as Node) &&
+      !hamburger.contains(e.target as Node)
+    ) {
+      navLinks.classList.remove("open");
+      hamburger.setAttribute("aria-expanded", "false");
+    }
+  });
 </script>
 
 <style>
