@@ -124,6 +124,8 @@ const navItems: NavItem[] = [
     flex-direction: column;
     gap: 0;
     list-style: none;
+    padding: 0;
+    margin: 0;
     position: absolute;
     top: 100%;
     right: 1.5rem;
@@ -151,7 +153,6 @@ const navItems: NavItem[] = [
   .nav-links li + li {
     border-top: 0.5px solid var(--border);
   }
-
   .nav-links a:hover {
     color: var(--text);
   }
@@ -170,7 +171,6 @@ const navItems: NavItem[] = [
       border-radius: 0;
       min-width: unset;
       gap: 1.5rem;
-      backgroud: #000;
     }
 
     .nav-links li + li {
@@ -179,7 +179,11 @@ const navItems: NavItem[] = [
 
     .nav-links li a {
       padding: 0;
-      /* margin: 0; */
+    }
+
+    .nav-links li a:hover {
+      padding: 0;
+      color: var(--text);
     }
   }
 </style>
