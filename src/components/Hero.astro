@@ -1,13 +1,10 @@
 <section class="hero">
   <span class="hero-name">Robert Paul Respicio</span>
-  <h1>
-    I build things that work well on both sides. The right tools and clean code
-    for the developers, and a great experience for the people who use it.
-  </h1>
-  <p>
-    7 years building frontend at product companies. I care about what ships and
-    how well it's built. Usually both at the same time.
-  </p>
+  <h1>I build things that work well on both sides.</h1>
+  <h2>
+    The right tools and clean code for the developers, and a great experience
+    for the people who use it.
+  </h2>
   <div class="hero-cta">
     <a href="#work" class="btn-primary">View my work</a>
     <a href="#" class="btn-secondary">Resume</a>
@@ -22,28 +19,42 @@
     margin: 0 auto;
   }
 
-  .hero-name {
+  /* .hero-name {
     font-family: var(--font-mono);
     font-size: 36px;
     color: var(--hero-name);
     letter-spacing: 0.06em;
+  } */
+
+  .hero-name {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    color: var(--hero-name);
+    margin-bottom: 1.5rem;
+    font-family: "Libre Baskerville", serif;
   }
 
   .hero h1 {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
-  }
-  .hero p {
-    font-size: 16px;
-    color: var(--muted);
-    line-height: 1.75;
-    /* max-width: 460px; */
-    margin-bottom: 2rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    /* max-width: 540px; */
+    color: #1a1a1a;
   }
 
+  .hero h2 {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    /* max-width: 540px; */
+    color: #6b6560;
+    margin-bottom: 2rem;
+  }
   .hero-cta {
     display: flex;
     gap: 0.75rem;
