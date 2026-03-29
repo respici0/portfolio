@@ -2,7 +2,7 @@
 import Nav from "./Nav.astro";
 import Hero from "./Hero.astro";
 import SelectedWork from "./SelectedWork.astro";
-import Workflow from "./Workflow.astro";
+import HowIThink from "./HowIThink.astro";
 import About from "./About.astro";
 import Stack from "./Stack.astro";
 import Contact from "./Contact.astro";
@@ -21,42 +21,16 @@ import Footer from "./Footer.astro";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio — Design Reference</title>
-    <style>
-      .design-note {
-        text-align: center;
-        padding: 1.5rem 2rem;
-        border-top: 0.5px solid var(--border);
-        font-family: var(--font-mono);
-        font-size: 11px;
-        color: var(--subtle);
-        max-width: 720px;
-        margin: 0 auto;
-      }
-    </style>
+    <title>Portfolio</title>
   </head>
   <body>
     <Nav />
     <Hero />
     <SelectedWork />
-    <Workflow />
     <About />
+    <HowIThink />
     <Stack />
     <Contact />
     <Footer />
-    <!-- STACK -->
-
-    <!-- CONTACT -->
-    <!-- <section class="contact-section" id="contact">
-      <p class="section-label">// get in touch</p>
-      <h2>Let's work together.</h2>
-      <p>
-        I'm open to full-time roles and the occasional freelance project. If
-        you're building something worth caring about, reach out.
-      </p>
-      <a href="mailto:hello@yourname.com" class="contact-email"
-        >hello@yourname.com ↗</a
-      >
-    </section> -->
   </body>
 </html>

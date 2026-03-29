@@ -1,5 +1,6 @@
 ---
 import SectionLayout from "../layouts/SectionLayout.astro";
+import Chip from "./Chip.astro";
 
 type Info = {
   label: string;
@@ -95,8 +96,8 @@ const infoList: Info[] = [
           {info && <p class="about-val">{info}</p>}
           {chips && (
             <div class="about-chips">
-              {chips.map((chip) => (
-                <span class="chip">{chip}</span>
+              {chips.map((info) => (
+                <Chip value={info} />
               ))}
             </div>
           )}
@@ -140,15 +141,5 @@ const infoList: Info[] = [
     gap: 6px;
     flex-wrap: wrap;
     margin-top: 6px;
-  }
-
-  .chip {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    background: var(--chip-bg);
-    border: 0.5px solid #e0d9cf;
-    padding: 2px 8px;
-    border-radius: var(--radius-sm);
   }
 </style>
