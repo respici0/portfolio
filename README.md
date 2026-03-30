@@ -1,6 +1,6 @@
 ## why
 
-I wanted to create a portfolio that was lightweight as possible, with minimal overhead. Prioritizing vanilla JS and CSS. Since it’s a content heavy site and didn’t have a lot of interaction.. I looked toward Astro. Astro is great since it doesn't ship javscript by default.
+I wanted to create a portfolio that was lightweight as possible, with minimal overhead. Prioritizing vanilla JS and CSS. Since it’s a content heavy site and didn’t have a lot of interaction.. I looked toward Astro. Astro is great since it doesn't ship javascript by default.
 
 I’ve been wanting to learn it and this was the perfect opportunity. 
 
