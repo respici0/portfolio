@@ -2,6 +2,23 @@
 import SectionLayout from "../layouts/SectionLayout.astro";
 import Chip from "./Chip.astro";
 
+type _Project = {
+  title: string;
+  year: string;
+  description: string;
+  links: {
+    type: "case study" | "live" | "github";
+    url?: string;
+  }[];
+  tech: string[]; 
+}
+
+type Projects = {
+  tag: 'Fetch Rewards' | 'Tensoriot' | 'Eleveight' | 'Personal Projects';
+  year?: string;
+  projects: _Project[];
+}
+
 type Project = {
   title: string;
   year: string;
@@ -13,6 +30,7 @@ type Project = {
   }[];
   tech: string[];
 };
+
 
 const projects: Project[] = [
   {
@@ -35,219 +53,63 @@ const projects: Project[] = [
 <SectionLayout label="// selected work" description="curated, not exhaustive." id="work">
   <!-- <div class="project-row" onclick="toggleCaseStudy('fetch')"> -->
    {projects.map(({ title, year, tag, description, links, tech }: Project) => (
-    <div class="project-row">
-    <div class="project-meta">
-      <div class="project-meta-left">
-        <span class="tag">{tag}</span>
-        <span class="project-year">{year}</span>
-      </div>
-      <div class="project-meta-right">
-      {
-        links.map(({type, url}) => (
-          type === 'case study' ?
-         <button class="project-link" id="fetch-toggle">{type} ↗</button> 
-         : 
-         <a href={url} target="_blank" class="project-link">{type} ↗</a>
-        ))
-      }
+    // <div class="project-row">
+    // <div class="project-meta">
+    //   <div class="project-meta-left">
+    //     <span class="tag">{tag}</span>
+    //     <span class="project-year">{year}</span>
+    //   </div>
+    //   <div class="project-meta-right">
+    //   {
+    //     links.map(({type, url}) => (
+    //       type === 'case study' ?
+    //      <button class="project-link" id="fetch-toggle">{type} ↗</button> 
+    //      : 
+    //      <a href={url} target="_blank" class="project-link">{type} ↗</a>
+    //     ))
+    //   }
+    //   </div>
+    // </div>
+    // <p class="project-title">{title}</p>
+    // <p class="project-desc">
+    //   {description}
+    // </p>
+    // <div class="chip-row">
+    //   {tech.map((value) => (<Chip {value} variant="white"/>))}
+    // </div>
+    
+  
+    <div class="project-header">
+      <span class="project-tag">Fetch Rewards</span>
+      <span class="project-year">2022-2025</span>
+    </div>
+    <div style="border-bottom:0.5px solid var(--border);">
+      <div style="padding:0.875rem 0 0.875rem 1rem;border-top:0.5px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+          <div>
+            <p style="font-size:15px;font-weight:500;color:var(--text);margin:0 0 0.4rem;">Campaign Management Dashboard</p>
+            <p style="font-size:13px;color:var(--muted);line-height:1.65;margin:0;">Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.</p>
+          </div>
+          <div class="links">
+            {
+              links.map(({type, url}) => (
+                type === 'case study' ? 
+<span class="project-link" id="fetch-toggle">{type} ↗</span> : 
+<a href="#" target="_blank">{type} ↗</a>
+              ))
+            }
+          </div>
+        </div>
+        <div class="tech">
+           {
+          tech.map((value) => (
+            <Chip variant="white" {value}/>
+          ))
+        }
+        </div>
       </div>
     </div>
-    <p class="project-title">{title}</p>
-    <p class="project-desc">
-      {description}
-    </p>
-    <div class="chip-row">
-      {tech.map((value) => (<Chip {value} variant="white"/>))}
-    </div>
-
-    <!-- CASE STUDY EXPANSION -->
-     {/* <div class="case-study" id="case-study-fetch">
-      <div class="cs-header">
-        <div
-          style="display:flex;gap:8px;margin-bottom:1.25rem;align-items:center;"
-        >
-          <span class="tag">Fetch Rewards</span>
-          <span class="mono muted" style="font-size:11px;">2022 — 2024</span>
-        </div>
-        <h2>Campaign Management Dashboard</h2>
-        <p>
-          Replacing a manual, spreadsheet-driven process with a purpose-built
-          internal tool — and getting it right the first time.
-        </p>
-      </div>
-
-      <div class="cs-meta-grid">
-        <div class="cs-meta-card">
-          <p class="cs-meta-label">ROLE</p>
-          <p class="cs-meta-value">Frontend engineer</p>
-          <p class="cs-meta-sub">sole frontend owner</p>
-        </div>
-        <div class="cs-meta-card">
-          <p class="cs-meta-label">STACK</p>
-          <p class="cs-meta-value">Svelte + TypeScript</p>
-          <p class="cs-meta-sub">REST API</p>
-        </div>
-        <div class="cs-meta-card">
-          <p class="cs-meta-label">OUTCOME</p>
-          <p class="cs-meta-value">Days → minutes</p>
-          <p class="cs-meta-sub">campaign launch time</p>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <p class="section-label">// the problem</p>
-        <p>
-          Campaign managers at Fetch were building and launching campaigns
-          manually — no dedicated tooling, no shared process. Work lived in
-          spreadsheets, handoffs were fragile, and every launch took days of
-          coordination.
-        </p>
-        <p style="color:var(--muted);">
-          This wasn't a tooling problem waiting to be solved. It was a business
-          constraint actively slowing growth.
-        </p>
-      </div>
-
-      <div class="before-after">
-        <div class="ba-card">
-          <p class="ba-label before">BEFORE</p>
-          <div class="ba-item">
-            <div class="ba-dot before"></div>
-            <p>Manual data entry across spreadsheets</p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div>
-            <p>Fragile handoffs between teams</p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div>
-            <p>Days to launch a single campaign</p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div>
-            <p>No audit trail or history</p>
-          </div>
-        </div>
-        <div class="ba-arrow">→</div>
-        <div class="ba-card">
-          <p class="ba-label after">AFTER</p>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div>
-            <p>Guided multi-step campaign builder</p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div>
-            <p>Single source of truth for all campaigns</p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div>
-            <p>Minutes to launch, zero regressions</p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div>
-            <p>Full history and status visibility</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <p class="section-label">// screenshot</p>
-        <div class="screenshot-placeholder">
-          <div class="screenshot-icon">
-            <div class="screenshot-icon-inner"></div>
-          </div>
-          <p class="mono muted" style="font-size:11px;">redacted screenshot</p>
-          <p
-            class="muted"
-            style="font-size:12px;text-align:center;max-width:240px;line-height:1.6;"
-          >
-            campaign builder — step 2 of 4<br />details blurred for
-            confidentiality
-          </p>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <p class="section-label">// the hard parts</p>
-        <div class="hard-part">
-          <span class="hard-part-num">01</span>
-          <div>
-            <h4>Form state that actually held together</h4>
-            <p>
-              Campaign creation was a multi-step flow with deeply interdependent
-              fields — change the campaign type on step one and half of steps
-              two and three needed to adapt. Getting that state model right
-              without leaking complexity into the UI took more care than
-              anything else on this project.
-            </p>
-          </div>
-        </div>
-        <div class="hard-part">
-          <span class="hard-part-num">02</span>
-          <div>
-            <h4>Shaping the API, not just consuming it</h4>
-            <p>
-              There was no existing backend to build against. I worked closely
-              with the backend engineer to define the contracts — advocating for
-              shapes that made the UI straightforward rather than adapting to
-              whatever was easiest server-side. That collaboration made the
-              difference between a clean frontend and a messy one.
-            </p>
-          </div>
-        </div>
-        <div class="hard-part">
-          <span class="hard-part-num">03</span>
-          <div>
-            <h4>No prior art to lean on</h4>
-            <p>
-              Nothing like this existed internally. Every architectural decision
-              was a first draft — component structure, data flow, error handling
-              patterns. I kept it conservative: fewer abstractions, more
-              readable code. The next engineer who touches it should feel
-              relief, not dread.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="cs-outcome">
-        <p class="section-label">// outcome</p>
-        <h3>
-          Campaign launch time went from days to minutes. The tool is still in
-          use.
-        </h3>
-        <p>
-          No regressions at go-live. The campaign managers who used it stopped
-          asking engineering for help with every launch — which was the whole
-          point.
-        </p>
-      </div>
-    </div>  */}
-  </div>
    ))}
-   {/* <div class="project-row">
-    <div class="project-meta">
-      <div class="project-meta-left">
-        <span class="tag">Side project</span>
-        <span class="project-year">2025</span>
-      </div>
-      <span class="project-link">live ↗</span>
-    </div>
-    <p class="project-title">Job Application Tracker</p>
-    <p class="project-desc">
-      Full-stack with a friend. Auth, data layer, and UI built from the ground
-      up — my first serious backend work.
-    </p>
-    <div class="chip-row">
-      <span class="chip">next.js</span>
-      <span class="chip">typescript</span>
-      <span class="chip">mongodb</span>
-      <span class="chip">mongoose</span>
-      <span class="chip">better auth</span>
-      <span class="chip">shadcn</span>
-      <span class="chip">tailwindcss</span>
-    </div>
-  </div>  */}
 </SectionLayout>
 
 <style>
@@ -279,21 +141,47 @@ const projects: Project[] = [
     align-items: end;
   }
 
-  .tag {
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+  span.project-tag {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     background: var(--chip-bg);
     color: var(--accent-dark);
     padding: 2px 8px;
     border-radius: var(--radius-sm);
   }
 
-  .project-year {
+  span.project-year {
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--muted);
   }
 
+  .divider {
+    padding:0.875rem 0 0.875rem 1rem;
+    border-top:0.5px solid var(--border);
+  }
+
+  .tech {
+   display:flex;
+   gap:6px;
+   flex-wrap:wrap;
+  }
+
+  .links {
+    display:flex;
+    flex-direction:column;
+    gap:0.5rem;
+    align-items:flex-end;
+    flex-shrink:0;
+    padding-left:2rem;
+    padding-top:2px;
+  }
   .project-link {
     font-family: var(--font-mono);
     font-size: 12px;
