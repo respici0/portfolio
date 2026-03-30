@@ -1,5 +1,6 @@
 ---
 import SectionLayout from "../layouts/SectionLayout.astro";
+import Chip from "./Chip.astro";
 
 type Project = {
   title: string;
@@ -19,14 +20,13 @@ const projects: Project[] = [
     year: "2022 - 2024",
     tag: "Fetch Rewards",
     description: "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
-    
     links: [
       {
         type: "case study",
       },
     ],
     tech: [
-      "sveltekit", "typescript", "rest api", "connect rpc", "protobuf", "tailwindcss", "sst", "aws",
+      "sveltekit", "typescript", "google auth", "rest api", "connect rpc", "protobuf", "tailwindcss", "sst", "aws",
     ],
   },
 ];
@@ -57,7 +57,7 @@ const projects: Project[] = [
       {description}
     </p>
     <div class="chip-row">
-      {tech.map((item) => (<span class="chip">{item}</span>))}
+      {tech.map((value) => (<Chip {value} variant="white"/>))}
     </div>
 
     <!-- CASE STUDY EXPANSION -->
@@ -319,7 +319,7 @@ const projects: Project[] = [
     font-size: 14px;
     color: var(--muted);
     line-height: 1.65;
-    max-width: 480px;
+    /* max-width: 480px; */
     margin-bottom: 1rem;
   }
 
@@ -327,16 +327,6 @@ const projects: Project[] = [
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-  }
-
-  .chip {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    background: var(--chip-bg);
-    border: 0.5px solid #e0d9cf;
-    padding: 2px 8px;
-    border-radius: var(--radius-sm);
   }
 
   /* ─── CASE STUDY (inline expansion) ─── */

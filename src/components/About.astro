@@ -6,50 +6,53 @@ type Info = {
   label: string;
   info?: string;
   chips?: string[];
-  full: boolean;
+  expand?: boolean;
 };
 
 const infoList: Info[] = [
-  { label: "title", info: "Software Engineer, Frontend", full: false },
   {
-    label: "experience",
-    info: "7 years",
-    full: false,
+    label: "identity",
+    chips: [
+      "husband",
+      "father",
+      "dog dad",
+      "oc native",
+      "coffee dependent",
+      "software engineer",
+    ],
+  },
+  {
+    label: "based in",
+    info: "Vancouver, Washington",
   },
   {
     label: "focus",
     info: "Frontend → Fullstack",
-    full: false,
   },
   {
-    label: "based in",
-    info: "Vancouver, WA",
-    full: false,
+    label: "experience",
+    info: "7 years 8 months",
   },
   {
     label: "open to",
-    chips: ["remote", "hybrid", "orange county, ca"],
-    full: true,
+    chips: ["remote", "hybrid", "orange county, california"],
+    expand: true,
   },
   {
     label: "currently building",
     info: "Next Steps - Job Tracking App",
-    full: false,
   },
   {
-    label: "currently learning",
-    info: "Astro",
-    full: false,
+    label: "currently fixated on",
+    chips: ["steam deck", "exploring the pnw", "this portfolio"],
   },
   {
     label: "currently reading",
     info: "The Pragmatic Programmer",
-    full: false,
   },
   {
     label: "currently playing",
     info: "Final Fantasy Tactics",
-    full: false,
   },
   {
     label: "tech",
@@ -67,12 +70,13 @@ const infoList: Info[] = [
       "chrome",
       "firefox",
     ],
-    full: true,
+    expand: true,
   },
   {
     label: "ask me about",
     chips: [
       "family",
+      "my golden retriever",
       "coffee",
       "tech",
       "tinkering",
@@ -80,15 +84,17 @@ const infoList: Info[] = [
       "poetry",
       "steam deck",
       "travel",
+      "camping",
+      "hiking",
       "cooking",
       "dining",
-      "outdoors",
       "gaming",
+      "movies",
       "music",
       "stickers",
       "thoughts",
     ],
-    full: true,
+    expand: true,
   },
 ];
 ---
@@ -100,14 +106,14 @@ const infoList: Info[] = [
 >
   <div class="about-grid">
     {
-      infoList.map(({ label, info, chips, full }: Info) => (
-        <div class={full ? "about-card full" : "about-card"}>
+      infoList.map(({ label, info, chips, expand }: Info) => (
+        <div class={`about-card ${expand && "expand"}`}>
           <p class="about-label">{label}</p>
           {info && <p class="about-val">{info}</p>}
           {chips && (
             <div class="about-chips">
-              {chips.map((info) => (
-                <Chip value={info} />
+              {chips.map((value) => (
+                <Chip {value} variant="off-white" />
               ))}
             </div>
           )}
@@ -131,7 +137,7 @@ const infoList: Info[] = [
     padding: 0.5rem 1.25rem;
   }
 
-  .about-card.full {
+  .about-card.expand {
     grid-column: span 2;
   }
 

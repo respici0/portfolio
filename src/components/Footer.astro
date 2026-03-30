@@ -4,13 +4,12 @@
 
 <footer class="footer-note">
   <a href="#" class="top-cta">↑ back to top</a>
-  <div>
-    I'm an engineer with an eye for design, but UI/UX is a skill in itself.
-  </div>
-  <div>
-    I collaborated with Claude on the visual direction and built everything else
-    myself.
-  </div>
+  <!-- wondering if we need this statement below once we have the case study in -->
+  <!-- <p>I have an eye for design, but UI/UX is a skill in itself.</p> -->
+  <p>
+    I collaborated with Claude on the visual direction for my portfolio. Read
+    about the process ↗
+  </p>
   <div>· Built with Astro · © 2026</div>
 </footer>
 
@@ -25,6 +24,10 @@
     margin: 0 auto;
   }
 
+  .footer-note p {
+    padding: 0;
+    margin: 0;
+  }
   .top-cta {
     text-decoration: none;
     display: block;
