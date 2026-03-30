@@ -35,16 +35,21 @@ const infoList: Info[] = [
   },
   {
     label: "open to",
-    chips: ["remote", "hybrid", "orange county, california"],
+    chips: [
+      "remote - anywhere",
+      "hybrid · orange county, ca",
+      "hybrid · portland, or",
+      "hybrid · vancouver, wa",
+    ],
     expand: true,
   },
   {
     label: "currently building",
-    info: "Next Steps - Job Tracking App",
+    info: "Next Steps: Job Tracking Tool",
   },
   {
     label: "currently fixated on",
-    chips: ["steam deck", "exploring the pnw", "this portfolio"],
+    chips: ["steam deck", "exploring pnw", "this portfolio"],
   },
   {
     label: "currently reading",
@@ -126,7 +131,7 @@ const infoList: Info[] = [
 <style>
   .about-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -137,8 +142,22 @@ const infoList: Info[] = [
     padding: 0.5rem 1.25rem;
   }
 
-  .about-card.expand {
-    grid-column: span 2;
+  @media (min-width: 768px) {
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .about-card {
+      background: var(--bg-white);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 0.5rem 1.25rem;
+    }
+    .about-card.expand {
+      grid-column: span 2;
+    }
   }
 
   .about-label {
