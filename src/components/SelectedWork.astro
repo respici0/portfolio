@@ -2,117 +2,255 @@
 import SectionLayout from "../layouts/SectionLayout.astro";
 import Chip from "./Chip.astro";
 
-type _Project = {
+type Project = {
   title: string;
-  year: string;
   description: string;
   links: {
     type: "case study" | "live" | "github";
     url?: string;
   }[];
-  tech: string[]; 
-}
-
-type Projects = {
-  tag: 'Fetch Rewards' | 'Tensoriot' | 'Eleveight' | 'Personal Projects';
-  year?: string;
-  projects: _Project[];
-}
-
-type Project = {
-  title: string;
-  year: string;
-  tag: string;
-  description: string;
-  links: {
-    type: "case study" | "live";
-    url?: string;
-  }[];
   tech: string[];
 };
 
+type Projects = {
+  tag: "Fetch Rewards" | "Tensoriot" | "Eleveight" | "Personal Projects";
+  year?: string;
+  projects: Project[];
+};
 
-const projects: Project[] = [
+const projects: Projects[] = [
   {
-    title: "Campaign Management Dashboard",
-    year: "2022 - 2024",
     tag: "Fetch Rewards",
-    description: "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
-    links: [
+    year: "2022 - 2025",
+    projects: [
       {
-        type: "case study",
+        title: "Campaign Management Dashboard",
+        description:
+          "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
+        links: [
+          {
+            type: "case study",
+          },
+          {
+            type: "live",
+            url: "flkdsajf",
+          },
+          {
+            type: "github",
+            url: "lfskjfklsdjkf",
+          },
+        ],
+        tech: [
+          "sveltekit",
+          "typescript",
+          "rest api",
+          "connect rpc",
+          "protobuf",
+          "okta auth",
+          "sst",
+          "aws",
+          "vite",
+          "vitetest",
+          "tailwind",
+          "shadcn",
+        ],
       },
     ],
-    tech: [
-      "sveltekit", "typescript", "google auth", "rest api", "connect rpc", "protobuf", "tailwindcss", "sst", "aws",
+  },
+  {
+    tag: "Tensoriot",
+    year: "2019 - 2022",
+    projects: [
+      {
+        title: "Project 1",
+        description:
+          "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
+        links: [
+          {
+            type: "case study",
+          },
+          {
+            type: "live",
+            url: "flkdsajf",
+          },
+          {
+            type: "github",
+            url: "lfskjfklsdjkf",
+          },
+        ],
+        tech: [
+          "sveltekit",
+          "typescript",
+          "rest api",
+          "connect rpc",
+          "protobuf",
+          "okta auth",
+          "sst",
+          "aws",
+          "vite",
+          "vitetest",
+          "tailwind",
+          "shadcn",
+        ],
+      },
+      {
+        title: "Project 2",
+        description:
+          "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
+        links: [
+          {
+            type: "case study",
+          },
+          {
+            type: "live",
+            url: "flkdsajf",
+          },
+          {
+            type: "github",
+            url: "lfskjfklsdjkf",
+          },
+        ],
+        tech: [
+          "sveltekit",
+          "typescript",
+          "rest api",
+          "connect rpc",
+          "protobuf",
+          "okta auth",
+          "sst",
+          "aws",
+          "vite",
+          "vitetest",
+          "tailwind",
+          "shadcn",
+        ],
+      },
+    ],
+  },
+  {
+    tag: "Eleveight",
+    year: "2018 - 2019",
+    projects: [
+      {
+        title: "Eleveight App",
+        description: "Some description",
+        links: [
+          {
+            type: "case study",
+          },
+          {
+            type: "live",
+            url: "flkdsajf",
+          },
+        ],
+        tech: [
+          "create react app (cra)",
+          "typescript",
+          "rest api",
+          "websockets",
+          "mui",
+          "aws",
+          "aws iam",
+        ],
+      },
+    ],
+  },
+  {
+    tag: "Personal Projects",
+    projects: [
+      {
+        title: "respicio.dev",
+        description:
+          "My portfolio designed in collaboration with Claude, built entirely by me. The design process itself became a case study.",
+        links: [
+          {
+            type: "case study",
+          },
+          {
+            type: "github",
+            url: "www.github.com/respici0/portfolio",
+          },
+        ],
+        tech: [
+          "astro",
+          "typescript",
+          "vanilla js",
+          "vanilla css",
+          "vercel",
+          "claude (ux/ux designer)",
+        ],
+      },
     ],
   },
 ];
 ---
 
-<SectionLayout label="// selected work" description="curated, not exhaustive." id="work">
+<SectionLayout
+  label="// selected work"
+  description="curated, not exhaustive."
+  id="work"
+>
   <!-- <div class="project-row" onclick="toggleCaseStudy('fetch')"> -->
-   {projects.map(({ title, year, tag, description, links, tech }: Project) => (
-    // <div class="project-row">
-    // <div class="project-meta">
-    //   <div class="project-meta-left">
-    //     <span class="tag">{tag}</span>
-    //     <span class="project-year">{year}</span>
-    //   </div>
-    //   <div class="project-meta-right">
-    //   {
-    //     links.map(({type, url}) => (
-    //       type === 'case study' ?
-    //      <button class="project-link" id="fetch-toggle">{type} ↗</button> 
-    //      : 
-    //      <a href={url} target="_blank" class="project-link">{type} ↗</a>
-    //     ))
-    //   }
-    //   </div>
-    // </div>
-    // <p class="project-title">{title}</p>
-    // <p class="project-desc">
-    //   {description}
-    // </p>
-    // <div class="chip-row">
-    //   {tech.map((value) => (<Chip {value} variant="white"/>))}
-    // </div>
-    
-  
-    <div class="project-header">
-      <span class="project-tag">Fetch Rewards</span>
-      <span class="project-year">2022-2025</span>
-    </div>
-    <div style="border-bottom:0.5px solid var(--border);">
-      <div style="padding:0.875rem 0 0.875rem 1rem;border-top:0.5px solid var(--border);">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
-          <div>
-            <p style="font-size:15px;font-weight:500;color:var(--text);margin:0 0 0.4rem;">Campaign Management Dashboard</p>
-            <p style="font-size:13px;color:var(--muted);line-height:1.65;margin:0;">Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.</p>
-          </div>
-          <div class="links">
-            {
-              links.map(({type, url}) => (
-                type === 'case study' ? 
-<span class="project-link" id="fetch-toggle">{type} ↗</span> : 
-<a href="#" target="_blank">{type} ↗</a>
-              ))
-            }
-          </div>
+  {
+    projects.map(({ tag, year, projects }: Projects) => (
+      <div class="project-group">
+        <div class="project-header">
+          <span class="project-tag">{tag}</span>
+          {year && <span class="project-year">{year}</span>}
         </div>
-        <div class="tech">
-           {
-          tech.map((value) => (
-            <Chip variant="white" {value}/>
-          ))
-        }
-        </div>
+        {/* PROJECTS */}
+        {projects.map(({ title, description, links, tech }: Project) => (
+          <div class="project-item">
+            <div class="project-info">
+              <div>
+                <p class="project-title">{title}</p>
+                <p class="project-desc">{description}</p>
+              </div>
+              <div class="links">
+                {links.map(({ type, url }) =>
+                  type === "case study" ? (
+                    <span class="project-link">case study ↗</span>
+                  ) : (
+                    <a class="project-link" href={url} target="_blank">
+                      {type} ↗
+                    </a>
+                  ),
+                )}
+              </div>
+            </div>
+            <div class="tech">
+              {tech.map((value) => (
+                <Chip variant="white" {value} />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
-   ))}
+    ))
+  }
 </SectionLayout>
 
 <style>
+  .project-group {
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .project-group:last-child {
+    border-bottom: none;
+  }
+
+  .project-item {
+    padding: 0.875rem 0 0.875rem 1rem;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .project-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.75rem;
+  }
+
   .project-row {
     padding: 1.5rem 0;
     border-bottom: 0.5px solid var(--border);
@@ -146,7 +284,7 @@ const projects: Project[] = [
     justify-content: space-between;
     align-items: center;
     padding: 1rem 0;
-}
+  }
   span.project-tag {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -163,28 +301,27 @@ const projects: Project[] = [
   }
 
   .divider {
-    padding:0.875rem 0 0.875rem 1rem;
-    border-top:0.5px solid var(--border);
+    padding: 0.875rem 0 0.875rem 1rem;
+    border-top: 0.5px solid var(--border);
   }
 
   .tech {
-   display:flex;
-   gap:6px;
-   flex-wrap:wrap;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
   }
 
   .links {
-    display:flex;
-    flex-direction:column;
-    gap:0.5rem;
-    align-items:flex-end;
-    flex-shrink:0;
-    padding-left:2rem;
-    padding-top:2px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+    padding-left: 2rem;
+    padding-top: 2px;
   }
   .project-link {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11px;
     color: var(--accent);
     text-decoration: none;
     cursor: pointer;
@@ -198,264 +335,22 @@ const projects: Project[] = [
   }
 
   .project-title {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    color: var(--text);
+    margin: 0 0 0.4rem;
   }
 
   .project-desc {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--muted);
     line-height: 1.65;
-    margin-bottom: 1rem;
+    margin: 0;
   }
 
   .chip-row {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-  }
-
-  /* ─── CASE STUDY (inline expansion) ─── */
-  .case-study {
-    display: none;
-    background: var(--bg-white);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    margin-top: 1rem;
-    overflow: hidden;
-  }
-
-  .case-study.open {
-    display: block;
-  }
-
-  .cs-header {
-    padding: 2.5rem 2rem 2rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .cs-header h2 {
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
-  }
-
-  .cs-header p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.75;
-    max-width: 480px;
-  }
-
-  .cs-meta-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    padding: 1.5rem 2rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .cs-meta-card {
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 0.875rem 1rem;
-  }
-
-  .cs-meta-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
-  }
-
-  .cs-meta-value {
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .cs-meta-sub {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 3px;
-  }
-
-  .cs-body {
-    padding: 1.75rem 2rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .cs-body p {
-    font-size: 14px;
-    line-height: 1.8;
-    max-width: 560px;
-  }
-
-  .cs-body p + p {
-    margin-top: 0.75rem;
-  }
-
-  /* before/after */
-  .before-after {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
-    align-items: start;
-    padding: 1.75rem 2rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .ba-card {
-    background: var(--bg-white);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-  }
-
-  .ba-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    margin-bottom: 10px;
-  }
-
-  .ba-label.before {
-    color: #a32d2d;
-  }
-  .ba-label.after {
-    color: #3b6d11;
-  }
-
-  .ba-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .ba-item:last-child {
-    margin-bottom: 0;
-  }
-
-  .ba-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-top: 6px;
-    flex-shrink: 0;
-  }
-
-  .ba-dot.before {
-    background: var(--border);
-  }
-  .ba-dot.after {
-    background: var(--accent);
-  }
-
-  .ba-item p {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .ba-item.after p {
-    color: var(--text);
-  }
-
-  .ba-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 2.5rem;
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--accent);
-  }
-
-  /* screenshot placeholder */
-  .screenshot-placeholder {
-    background: #f0ebe3;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-md);
-    height: 220px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .screenshot-icon {
-    width: 32px;
-    height: 32px;
-    border: 1.5px solid var(--subtle);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .screenshot-icon-inner {
-    width: 14px;
-    height: 14px;
-    border: 1.5px solid var(--subtle);
-    border-radius: 2px;
-  }
-
-  /* hard parts */
-  .hard-part {
-    display: flex;
-    gap: 1.5rem;
-    padding: 1rem 0;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .hard-part:last-child {
-    border-bottom: none;
-  }
-
-  .hard-part-num {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--subtle);
-    min-width: 24px;
-    padding-top: 3px;
-    flex-shrink: 0;
-  }
-
-  .hard-part h4 {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 4px;
-  }
-
-  .hard-part p {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  /* outcome */
-  .cs-outcome {
-    padding: 1.75rem 2rem;
-  }
-
-  .cs-outcome h3 {
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.4;
-    max-width: 480px;
-    margin-bottom: 0.75rem;
-  }
-
-  .cs-outcome p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.75;
-    max-width: 480px;
   }
 </style>
