@@ -244,14 +244,6 @@ const projects: Projects[] = [
     border-top: 0.5px solid var(--border);
   }
 
-  @media (min-width: 768px) {
-    .project-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.75rem;
-    }
-  }
   .project-info {
     display: flex;
     flex-direction: column-reverse;
@@ -259,6 +251,7 @@ const projects: Projects[] = [
     align-items: flex-start;
     margin-bottom: 1.75rem;
   }
+
   .project-row {
     padding: 1.5rem 0;
     border-bottom: 0.5px solid var(--border);
@@ -318,24 +311,13 @@ const projects: Projects[] = [
     gap: 6px;
     flex-wrap: wrap;
   }
-
-  @media (min-width: 768px) {
-    .links {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      flex-shrink: 0;
-      padding-left: 2rem;
-      padding-top: 2px;
-    }
-  }
-
   .links {
     display: flex;
     gap: 2rem;
     margin-bottom: 0.5em;
     justify-content: space-between;
   }
+
   .project-link {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -369,5 +351,22 @@ const projects: Projects[] = [
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
+  }
+  @media (min-width: 768px) {
+    .project-info {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.75rem;
+    }
+    .links {
+      flex-direction: column;
+      align-items: flex-end;
+      flex-shrink: 0;
+      padding-left: 2rem;
+      padding-top: 2px;
+      gap: 0;
+      margin-bottom: 0;
+    }
   }
 </style>
