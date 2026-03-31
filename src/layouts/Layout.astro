@@ -61,7 +61,7 @@ import Analytics from "@vercel/analytics/astro";
         --subtle: #005500;
         --border: #003b00;
         --chip-bg: #001200;
-        --accent: #008f11;
+        --accent: #00cc33;
         --accent-hover: #00ff41;
         --accent-dark: #00cc33;
       }
@@ -172,6 +172,10 @@ import Analytics from "@vercel/analytics/astro";
         display: inline-flex;
       }
 
+      body.matrix-mode #rabbit-connect {
+        display: none;
+      }
+
       #matrix-overlay {
         position: fixed;
         inset: 0;
@@ -261,7 +265,7 @@ import Analytics from "@vercel/analytics/astro";
     <script>
       const COPY: Record<string, string> = {
         connect:
-          "Wake up...\nRobert has been searching for you.\nNone of this is real.\nBut you are...",
+          "Robert has been searching for you.\nNone of this is real.\nBut you are...\nIt's time to wake up...\n",
       };
 
       let matrixActive = false;
@@ -353,6 +357,7 @@ import Analytics from "@vercel/analytics/astro";
                 overlay.classList.remove("visible");
                 setTimeout(() => {
                   matrixActive = false;
+                  if (twTimeout) clearTimeout(twTimeout);
                   if (animFrame) cancelAnimationFrame(animFrame);
                   ctx.clearRect(0, 0, canvas.width, canvas.height);
                   canvas.classList.remove("visible");
@@ -364,7 +369,7 @@ import Analytics from "@vercel/analytics/astro";
                   const navBtn = document.getElementById(
                     "rabbit-header",
                   ) as HTMLElement | null;
-                  if (navBtn) {
+                  if (navBtn && matrixMode) {
                     navBtn.style.opacity = "1";
                     navBtn.removeAttribute("title");
                     navBtn.removeAttribute("aria-label");
@@ -373,7 +378,7 @@ import Analytics from "@vercel/analytics/astro";
                   const footerBtn = document.getElementById(
                     "rabbit-connect",
                   ) as HTMLElement | null;
-                  if (footerBtn) {
+                  if (footerBtn && matrixMode) {
                     footerBtn.style.opacity = "1";
                     footerBtn.removeAttribute("title");
                     footerBtn.removeAttribute("aria-label");
