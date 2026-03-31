@@ -6,7 +6,7 @@ type Project = {
   title: string;
   description: string;
   links: {
-    type: "case study" | "live" | "github";
+    type: "case study" | "case study in progress" | "live" | "github";
     url?: string;
   }[];
   tech: string[];
@@ -26,33 +26,25 @@ const projects: Projects[] = [
       {
         title: "Campaign Management Dashboard",
         description:
-          "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
+          "Owned frontend architecture from scratch. Turned a multi-department campaign setup into a self-service workflow which dropped launch times from days to minutes.",
         links: [
           {
-            type: "case study",
-          },
-          {
-            type: "live",
-            url: "flkdsajf",
-          },
-          {
-            type: "github",
-            url: "lfskjfklsdjkf",
+            type: "case study in progress",
           },
         ],
         tech: [
           "sveltekit",
           "typescript",
+          "vite",
+          "vitest",
+          "tailwind",
+          "shadcn",
           "rest api",
           "connect rpc",
           "protobuf",
           "okta auth",
           "sst",
           "aws",
-          "vite",
-          "vitetest",
-          "tailwind",
-          "shadcn",
         ],
       },
     ],
@@ -62,67 +54,38 @@ const projects: Projects[] = [
     year: "2019 - 2022",
     projects: [
       {
-        title: "Project 1",
+        title: "Real-time Translator",
         description:
-          "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
+          "Designed and built a translation tool for a Canadian client — French Canadian to English and back, powered by AWS Translate.",
         links: [
           {
-            type: "case study",
-          },
-          {
-            type: "live",
-            url: "flkdsajf",
-          },
-          {
-            type: "github",
-            url: "lfskjfklsdjkf",
+            type: "case study in progress",
           },
         ],
-        tech: [
-          "sveltekit",
-          "typescript",
-          "rest api",
-          "connect rpc",
-          "protobuf",
-          "okta auth",
-          "sst",
-          "aws",
-          "vite",
-          "vitetest",
-          "tailwind",
-          "shadcn",
-        ],
+        tech: ["react", "websockets", "mui", "aws"],
       },
       {
-        title: "Project 2",
+        title: "Smart Store Analytics Dashboard",
         description:
-          "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
+          "Drove the frontend for a smart store analytics dashboard that surfaced consumer dwell time (heat maps) and purchase patterns (charts) across store sections.",
         links: [
           {
-            type: "case study",
-          },
-          {
-            type: "live",
-            url: "flkdsajf",
-          },
-          {
-            type: "github",
-            url: "lfskjfklsdjkf",
+            type: "case study in progress",
           },
         ],
         tech: [
           "sveltekit",
           "typescript",
+          "vite",
+          "vitest",
+          "tailwind",
+          "shadcn",
           "rest api",
           "connect rpc",
           "protobuf",
           "okta auth",
           "sst",
           "aws",
-          "vite",
-          "vitetest",
-          "tailwind",
-          "shadcn",
         ],
       },
     ],
@@ -132,26 +95,15 @@ const projects: Projects[] = [
     year: "2018 - 2019",
     projects: [
       {
-        title: "Eleveight App",
-        description: "Some description",
+        title: "Case management platform",
+        description:
+          "Built a case management platform serving students, job seekers, schools, and social service organizations.",
         links: [
           {
-            type: "case study",
-          },
-          {
-            type: "live",
-            url: "flkdsajf",
+            type: "case study in progress",
           },
         ],
-        tech: [
-          "create react app (cra)",
-          "typescript",
-          "rest api",
-          "websockets",
-          "mui",
-          "aws",
-          "aws iam",
-        ],
+        tech: ["react", "typescript", "websockets", "mui", "rest api", "aws"],
       },
     ],
   },
@@ -163,12 +115,12 @@ const projects: Projects[] = [
         description:
           "My portfolio designed in collaboration with Claude, built entirely by me. The design process itself became a case study.",
         links: [
-          // {
-          //   type: "case study",
-          // },
+          {
+            type: "case study in progress",
+          },
           {
             type: "github",
-            url: "www.github.com/respici0/portfolio",
+            url: "https://github.com/respici0/portfolio",
           },
         ],
         tech: [
@@ -177,7 +129,35 @@ const projects: Projects[] = [
           "vanilla js",
           "vanilla css",
           "vercel",
-          "claude (ux/ux designer)",
+          "claude (ui/ux designer)",
+        ],
+      },
+      {
+        title: "Next Steps",
+        description:
+          "Full-stack with a friend. Auth, data layer, and UI built from the ground up. Features I wanted for the job search.",
+        links: [
+          {
+            type: "case study in progress",
+          },
+          {
+            type: "live",
+            url: "https://next-steps-amber.vercel.app",
+          },
+          {
+            type: "github",
+            url: "https://github.com/respici0/portfolio",
+          },
+        ],
+        tech: [
+          "Next.js",
+          "typescript",
+          "tailwind",
+          "server actions",
+          "better auth",
+          "mongodb",
+          "mongoose",
+          "vercel",
         ],
       },
     ],
@@ -209,7 +189,11 @@ const projects: Projects[] = [
               <div class="links">
                 {links.map(({ type, url }) =>
                   type === "case study" ? (
-                    <span class="project-link">case study ↗</span>
+                    <button class="project-link" id="case-study">
+                      case study ↗
+                    </button>
+                  ) : type === "case study in progress" ? (
+                    <span class="project-coming-soon">{type}</span>
                   ) : (
                     <a class="project-link" href={url} target="_blank">
                       {type} ↗
@@ -327,6 +311,17 @@ const projects: Projects[] = [
     border: none;
     background: none;
     padding: 0;
+  }
+
+  .project-coming-soon {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    border: none;
+    background: none;
+    padding: 0;
+    opacity: 0.5;
   }
 
   .project-link:hover {
