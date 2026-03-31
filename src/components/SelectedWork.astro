@@ -4,253 +4,249 @@ import Chip from "./Chip.astro";
 
 type Project = {
   title: string;
-  year: string;
-  tag: string;
   description: string;
   links: {
-    type: "case study" | "live";
+    type: "case study" | "case study in progress" | "live" | "github";
     url?: string;
   }[];
   tech: string[];
 };
 
-const projects: Project[] = [
+type Projects = {
+  tag: "Fetch Rewards" | "Tensoriot" | "Eleveight" | "Personal Projects";
+  year?: string;
+  projects: Project[];
+};
+
+const projects: Projects[] = [
   {
-    title: "Campaign Management Dashboard",
-    year: "2022 - 2024",
     tag: "Fetch Rewards",
-    description: "Owned frontend architecture from scratch. Campaign launch time dropped from days to minutes — zero regressions at go-live.",
-    links: [
+    year: "2022 - 2025",
+    projects: [
       {
-        type: "case study",
+        title: "Self-serve Dashboard Tooling",
+        description:
+          "Built a workflow enabling non-technical stakeholders to create, deploy, and maintain dashboards independently. Reducing recurring engineering involvement.",
+        links: [
+          {
+            type: "case study in progress",
+          },
+        ],
+        tech: ["npm", "internal template tool", "github", "claude"],
+      },
+      {
+        title: "Campaign Management Dashboard",
+        description:
+          "Owned frontend architecture from scratch. Turned a multi-department campaign setup into a self-service workflow which dropped launch times from days to minutes.",
+        links: [
+          {
+            type: "case study in progress",
+          },
+        ],
+        tech: [
+          "sveltekit",
+          "typescript",
+          "vite",
+          "vitest",
+          "tailwind",
+          "shadcn",
+          "rest api",
+          "connect rpc",
+          "protobuf",
+          "okta auth",
+          "sst",
+          "aws",
+        ],
       },
     ],
-    tech: [
-      "sveltekit", "typescript", "google auth", "rest api", "connect rpc", "protobuf", "tailwindcss", "sst", "aws",
+  },
+  {
+    tag: "Tensoriot",
+    year: "2019 - 2022",
+    projects: [
+      {
+        title: "Real-time Translator",
+        description:
+          "Designed and built a translation tool for a Canadian client — French Canadian to English and back, powered by AWS Translate.",
+        links: [
+          {
+            type: "case study in progress",
+          },
+        ],
+        tech: ["react", "typescript", "websockets", "mui", "aws"],
+      },
+      {
+        title: "Smart Store Analytics Dashboard",
+        description:
+          "Drove the frontend for a smart store analytics dashboard that surfaced consumer dwell time (heat maps) and purchase patterns (charts) across store sections.",
+        links: [
+          {
+            type: "case study in progress",
+          },
+        ],
+        tech: [
+          "sveltekit",
+          "typescript",
+          "vite",
+          "vitest",
+          "tailwind",
+          "shadcn",
+          "rest api",
+          "connect rpc",
+          "protobuf",
+          "okta auth",
+          "sst",
+          "aws",
+        ],
+      },
+    ],
+  },
+  {
+    tag: "Eleveight",
+    year: "2018 - 2019",
+    projects: [
+      {
+        title: "Case management platform",
+        description:
+          "Built a case management platform serving students, job seekers, schools, and social service organizations.",
+        links: [
+          {
+            type: "case study in progress",
+          },
+        ],
+        tech: ["react", "typescript", "websockets", "mui", "rest api", "aws"],
+      },
+    ],
+  },
+  {
+    tag: "Personal Projects",
+    projects: [
+      {
+        title: "respicio.dev",
+        description:
+          "My portfolio designed in collaboration with Claude, built entirely by me. The design process itself became a case study.",
+        links: [
+          {
+            type: "case study in progress",
+          },
+          {
+            type: "github",
+            url: "https://github.com/respici0/portfolio",
+          },
+        ],
+        tech: [
+          "astro",
+          "typescript",
+          "vanilla js",
+          "vanilla css",
+          "vercel",
+          "claude (ui/ux designer)",
+        ],
+      },
+      {
+        title: "Next Steps",
+        description:
+          "Full-stack with a friend. Auth, data layer, and UI built from the ground up. Features I wanted for the job search.",
+        links: [
+          {
+            type: "case study in progress",
+          },
+          {
+            type: "live",
+            url: "https://next-steps-amber.vercel.app",
+          },
+          {
+            type: "github",
+            url: "https://github.com/respici0/portfolio",
+          },
+        ],
+        tech: [
+          "Next.js",
+          "typescript",
+          "tailwind",
+          "server actions",
+          "better auth",
+          "mongodb",
+          "mongoose",
+          "vercel",
+        ],
+      },
     ],
   },
 ];
 ---
 
-<SectionLayout label="// selected work" description="curated, not exhaustive." id="work">
+<SectionLayout
+  label="// selected work"
+  description="curated, not exhaustive."
+  id="work"
+>
   <!-- <div class="project-row" onclick="toggleCaseStudy('fetch')"> -->
-   {projects.map(({ title, year, tag, description, links, tech }: Project) => (
-    <div class="project-row">
-    <div class="project-meta">
-      <div class="project-meta-left">
-        <span class="tag">{tag}</span>
-        <span class="project-year">{year}</span>
-      </div>
-      <div class="project-meta-right">
-      {
-        links.map(({type, url}) => (
-          type === 'case study' ?
-         <button class="project-link" id="fetch-toggle">{type} ↗</button> 
-         : 
-         <a href={url} target="_blank" class="project-link">{type} ↗</a>
-        ))
-      }
-      </div>
-    </div>
-    <p class="project-title">{title}</p>
-    <p class="project-desc">
-      {description}
-    </p>
-    <div class="chip-row">
-      {tech.map((value) => (<Chip {value} variant="white"/>))}
-    </div>
-
-    <!-- CASE STUDY EXPANSION -->
-     {/* <div class="case-study" id="case-study-fetch">
-      <div class="cs-header">
-        <div
-          style="display:flex;gap:8px;margin-bottom:1.25rem;align-items:center;"
-        >
-          <span class="tag">Fetch Rewards</span>
-          <span class="mono muted" style="font-size:11px;">2022 — 2024</span>
+  {
+    projects.map(({ tag, year, projects }: Projects) => (
+      <div class="project-group">
+        <div class="project-header">
+          <span class="project-tag">{tag}</span>
+          {year && <span class="project-year">{year}</span>}
         </div>
-        <h2>Campaign Management Dashboard</h2>
-        <p>
-          Replacing a manual, spreadsheet-driven process with a purpose-built
-          internal tool — and getting it right the first time.
-        </p>
+        {/* PROJECTS */}
+        {projects.map(({ title, description, links, tech }: Project) => (
+          <div class="project-item">
+            <div class="project-info">
+              <div>
+                <p class="project-title">{title}</p>
+                <p class="project-desc">{description}</p>
+              </div>
+              <div class="links">
+                {links.map(({ type, url }) =>
+                  type === "case study" ? (
+                    <button class="project-link" id="case-study">
+                      case study ↗
+                    </button>
+                  ) : type === "case study in progress" ? (
+                    <span class="project-coming-soon">{type}</span>
+                  ) : (
+                    <a class="project-link" href={url} target="_blank">
+                      {type} ↗
+                    </a>
+                  ),
+                )}
+              </div>
+            </div>
+            <div class="tech">
+              {tech.map((value) => (
+                <Chip variant="white" {value} />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
-
-      <div class="cs-meta-grid">
-        <div class="cs-meta-card">
-          <p class="cs-meta-label">ROLE</p>
-          <p class="cs-meta-value">Frontend engineer</p>
-          <p class="cs-meta-sub">sole frontend owner</p>
-        </div>
-        <div class="cs-meta-card">
-          <p class="cs-meta-label">STACK</p>
-          <p class="cs-meta-value">Svelte + TypeScript</p>
-          <p class="cs-meta-sub">REST API</p>
-        </div>
-        <div class="cs-meta-card">
-          <p class="cs-meta-label">OUTCOME</p>
-          <p class="cs-meta-value">Days → minutes</p>
-          <p class="cs-meta-sub">campaign launch time</p>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <p class="section-label">// the problem</p>
-        <p>
-          Campaign managers at Fetch were building and launching campaigns
-          manually — no dedicated tooling, no shared process. Work lived in
-          spreadsheets, handoffs were fragile, and every launch took days of
-          coordination.
-        </p>
-        <p style="color:var(--muted);">
-          This wasn't a tooling problem waiting to be solved. It was a business
-          constraint actively slowing growth.
-        </p>
-      </div>
-
-      <div class="before-after">
-        <div class="ba-card">
-          <p class="ba-label before">BEFORE</p>
-          <div class="ba-item">
-            <div class="ba-dot before"></div>
-            <p>Manual data entry across spreadsheets</p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div>
-            <p>Fragile handoffs between teams</p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div>
-            <p>Days to launch a single campaign</p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div>
-            <p>No audit trail or history</p>
-          </div>
-        </div>
-        <div class="ba-arrow">→</div>
-        <div class="ba-card">
-          <p class="ba-label after">AFTER</p>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div>
-            <p>Guided multi-step campaign builder</p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div>
-            <p>Single source of truth for all campaigns</p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div>
-            <p>Minutes to launch, zero regressions</p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div>
-            <p>Full history and status visibility</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <p class="section-label">// screenshot</p>
-        <div class="screenshot-placeholder">
-          <div class="screenshot-icon">
-            <div class="screenshot-icon-inner"></div>
-          </div>
-          <p class="mono muted" style="font-size:11px;">redacted screenshot</p>
-          <p
-            class="muted"
-            style="font-size:12px;text-align:center;max-width:240px;line-height:1.6;"
-          >
-            campaign builder — step 2 of 4<br />details blurred for
-            confidentiality
-          </p>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <p class="section-label">// the hard parts</p>
-        <div class="hard-part">
-          <span class="hard-part-num">01</span>
-          <div>
-            <h4>Form state that actually held together</h4>
-            <p>
-              Campaign creation was a multi-step flow with deeply interdependent
-              fields — change the campaign type on step one and half of steps
-              two and three needed to adapt. Getting that state model right
-              without leaking complexity into the UI took more care than
-              anything else on this project.
-            </p>
-          </div>
-        </div>
-        <div class="hard-part">
-          <span class="hard-part-num">02</span>
-          <div>
-            <h4>Shaping the API, not just consuming it</h4>
-            <p>
-              There was no existing backend to build against. I worked closely
-              with the backend engineer to define the contracts — advocating for
-              shapes that made the UI straightforward rather than adapting to
-              whatever was easiest server-side. That collaboration made the
-              difference between a clean frontend and a messy one.
-            </p>
-          </div>
-        </div>
-        <div class="hard-part">
-          <span class="hard-part-num">03</span>
-          <div>
-            <h4>No prior art to lean on</h4>
-            <p>
-              Nothing like this existed internally. Every architectural decision
-              was a first draft — component structure, data flow, error handling
-              patterns. I kept it conservative: fewer abstractions, more
-              readable code. The next engineer who touches it should feel
-              relief, not dread.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="cs-outcome">
-        <p class="section-label">// outcome</p>
-        <h3>
-          Campaign launch time went from days to minutes. The tool is still in
-          use.
-        </h3>
-        <p>
-          No regressions at go-live. The campaign managers who used it stopped
-          asking engineering for help with every launch — which was the whole
-          point.
-        </p>
-      </div>
-    </div>  */}
-  </div>
-   ))}
-   {/* <div class="project-row">
-    <div class="project-meta">
-      <div class="project-meta-left">
-        <span class="tag">Side project</span>
-        <span class="project-year">2025</span>
-      </div>
-      <span class="project-link">live ↗</span>
-    </div>
-    <p class="project-title">Job Application Tracker</p>
-    <p class="project-desc">
-      Full-stack with a friend. Auth, data layer, and UI built from the ground
-      up — my first serious backend work.
-    </p>
-    <div class="chip-row">
-      <span class="chip">next.js</span>
-      <span class="chip">typescript</span>
-      <span class="chip">mongodb</span>
-      <span class="chip">mongoose</span>
-      <span class="chip">better auth</span>
-      <span class="chip">shadcn</span>
-      <span class="chip">tailwindcss</span>
-    </div>
-  </div>  */}
+    ))
+  }
 </SectionLayout>
 
 <style>
+  .project-group {
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .project-group:last-child {
+    border-bottom: none;
+  }
+
+  .project-item {
+    padding: 0.875rem 0 0.875rem 1rem;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .project-info {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.75rem;
+  }
+
   .project-row {
     padding: 1.5rem 0;
     border-bottom: 0.5px solid var(--border);
@@ -279,24 +275,47 @@ const projects: Project[] = [
     align-items: end;
   }
 
-  .tag {
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  span.project-tag {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     background: var(--chip-bg);
     color: var(--accent-dark);
     padding: 2px 8px;
     border-radius: var(--radius-sm);
   }
 
-  .project-year {
+  span.project-year {
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--muted);
   }
 
+  .divider {
+    padding: 0.875rem 0 0.875rem 1rem;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .tech {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .links {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 0.5em;
+    justify-content: space-between;
+  }
+
   .project-link {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11px;
     color: var(--accent);
     text-decoration: none;
     cursor: pointer;
@@ -305,21 +324,33 @@ const projects: Project[] = [
     padding: 0;
   }
 
+  .project-coming-soon {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    border: none;
+    background: none;
+    padding: 0;
+    opacity: 0.5;
+  }
+
   .project-link:hover {
     color: var(--accent-hover);
   }
 
   .project-title {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    color: var(--text);
+    margin: 0 0 0.4rem;
   }
 
   .project-desc {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--muted);
     line-height: 1.65;
-    margin-bottom: 1rem;
+    margin: 0;
   }
 
   .chip-row {
@@ -327,247 +358,21 @@ const projects: Project[] = [
     gap: 6px;
     flex-wrap: wrap;
   }
-
-  /* ─── CASE STUDY (inline expansion) ─── */
-  .case-study {
-    display: none;
-    background: var(--bg-white);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    margin-top: 1rem;
-    overflow: hidden;
-  }
-
-  .case-study.open {
-    display: block;
-  }
-
-  .cs-header {
-    padding: 2.5rem 2rem 2rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .cs-header h2 {
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
-  }
-
-  .cs-header p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.75;
-    max-width: 480px;
-  }
-
-  .cs-meta-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    padding: 1.5rem 2rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .cs-meta-card {
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 0.875rem 1rem;
-  }
-
-  .cs-meta-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
-  }
-
-  .cs-meta-value {
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .cs-meta-sub {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 3px;
-  }
-
-  .cs-body {
-    padding: 1.75rem 2rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .cs-body p {
-    font-size: 14px;
-    line-height: 1.8;
-    max-width: 560px;
-  }
-
-  .cs-body p + p {
-    margin-top: 0.75rem;
-  }
-
-  /* before/after */
-  .before-after {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
-    align-items: start;
-    padding: 1.75rem 2rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .ba-card {
-    background: var(--bg-white);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-  }
-
-  .ba-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    margin-bottom: 10px;
-  }
-
-  .ba-label.before {
-    color: #a32d2d;
-  }
-  .ba-label.after {
-    color: #3b6d11;
-  }
-
-  .ba-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .ba-item:last-child {
-    margin-bottom: 0;
-  }
-
-  .ba-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-top: 6px;
-    flex-shrink: 0;
-  }
-
-  .ba-dot.before {
-    background: var(--border);
-  }
-  .ba-dot.after {
-    background: var(--accent);
-  }
-
-  .ba-item p {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .ba-item.after p {
-    color: var(--text);
-  }
-
-  .ba-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 2.5rem;
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--accent);
-  }
-
-  /* screenshot placeholder */
-  .screenshot-placeholder {
-    background: #f0ebe3;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-md);
-    height: 220px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .screenshot-icon {
-    width: 32px;
-    height: 32px;
-    border: 1.5px solid var(--subtle);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .screenshot-icon-inner {
-    width: 14px;
-    height: 14px;
-    border: 1.5px solid var(--subtle);
-    border-radius: 2px;
-  }
-
-  /* hard parts */
-  .hard-part {
-    display: flex;
-    gap: 1.5rem;
-    padding: 1rem 0;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .hard-part:last-child {
-    border-bottom: none;
-  }
-
-  .hard-part-num {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--subtle);
-    min-width: 24px;
-    padding-top: 3px;
-    flex-shrink: 0;
-  }
-
-  .hard-part h4 {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 4px;
-  }
-
-  .hard-part p {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  /* outcome */
-  .cs-outcome {
-    padding: 1.75rem 2rem;
-  }
-
-  .cs-outcome h3 {
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.4;
-    max-width: 480px;
-    margin-bottom: 0.75rem;
-  }
-
-  .cs-outcome p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.75;
-    max-width: 480px;
+  @media (min-width: 768px) {
+    .project-info {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.75rem;
+    }
+    .links {
+      flex-direction: column;
+      align-items: flex-end;
+      flex-shrink: 0;
+      padding-left: 2rem;
+      padding-top: 2px;
+      gap: 0;
+      margin-bottom: 0;
+    }
   }
 </style>
