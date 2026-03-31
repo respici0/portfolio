@@ -163,9 +163,9 @@ const projects: Projects[] = [
         description:
           "My portfolio designed in collaboration with Claude, built entirely by me. The design process itself became a case study.",
         links: [
-          {
-            type: "case study",
-          },
+          // {
+          //   type: "case study",
+          // },
           {
             type: "github",
             url: "www.github.com/respici0/portfolio",
@@ -244,13 +244,21 @@ const projects: Projects[] = [
     border-top: 0.5px solid var(--border);
   }
 
+  @media (min-width: 768px) {
+    .project-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.75rem;
+    }
+  }
   .project-info {
     display: flex;
+    flex-direction: column-reverse;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 1.75rem;
   }
-
   .project-row {
     padding: 1.5rem 0;
     border-bottom: 0.5px solid var(--border);
@@ -311,13 +319,22 @@ const projects: Projects[] = [
     flex-wrap: wrap;
   }
 
+  @media (min-width: 768px) {
+    .links {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex-shrink: 0;
+      padding-left: 2rem;
+      padding-top: 2px;
+    }
+  }
+
   .links {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    flex-shrink: 0;
-    padding-left: 2rem;
-    padding-top: 2px;
+    gap: 2rem;
+    margin-bottom: 0.5em;
+    justify-content: space-between;
   }
   .project-link {
     font-family: var(--font-mono);
