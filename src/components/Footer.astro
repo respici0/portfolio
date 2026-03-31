@@ -1,5 +1,6 @@
 ---
 import WhiteRabbit from "./icons/WhiteRabbit.astro";
+import BluePill from "./icons/BluePill.astro";
 ---
 
 <footer class="footer-note">
@@ -15,8 +16,15 @@ import WhiteRabbit from "./icons/WhiteRabbit.astro";
       class="rabbit-btn"
       aria-label="...and see how far the rabbit hole goes."
       title="...and see how far the rabbit hole goes."
+      style="vertical-align: middle; margin-left: 2px;"
     >
-      <WhiteRabbit />
+      <span class="rabbit-svg">
+        <WhiteRabbit />
+      </span>
+
+      <span class="pill-svg">
+        <BluePill />
+      </span>
     </button>
   </div>
 </footer>
