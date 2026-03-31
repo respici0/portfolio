@@ -44,11 +44,26 @@ import Analytics from "@vercel/analytics/astro";
         --accent-bg: #fbf3e8;
         --accent-hover: #b36a2a;
         --accent-dark: #854f0b;
+        --github-color: #24292f;
+        --linkedIn-color: #0a66c2;
         --font-sans: "Inter", sans-serif;
         --font-mono: "JetBrains Mono", monospace;
         --radius-sm: 4px;
         --radius-md: 8px;
         --radius-lg: 12px;
+      }
+
+      body.matrix-mode {
+        --bg: #000000;
+        --bg-white: #0a0a0a;
+        --text: #00ff41;
+        --muted: #008f11;
+        --subtle: #005500;
+        --border: #003b00;
+        --chip-bg: #001200;
+        --accent: #008f11;
+        --accent-hover: #00ff41;
+        --accent-dark: #00cc33;
       }
 
       html {
@@ -63,7 +78,9 @@ import Analytics from "@vercel/analytics/astro";
         font-size: 16px;
         line-height: 1.7;
         -webkit-font-smoothing: antialiased;
-        min-height: 100dvh;
+        transition:
+          background-color 0.8s ease,
+          color 0.8s ease;
       }
 
       .mono {
@@ -76,7 +93,6 @@ import Analytics from "@vercel/analytics/astro";
         color: var(--accent);
       }
 
-      /* ─── LAYOUT ─── */
       .page {
         max-width: 720px;
         margin: 0 auto;
@@ -87,8 +103,75 @@ import Analytics from "@vercel/analytics/astro";
         border: none;
         border-top: 0.5px solid var(--border);
       }
-    </style><style is:global>
-      /* ── MATRIX OVERLAY ── */
+    </style>
+
+    <style is:global>
+      nav,
+      footer,
+      .section,
+      .hero {
+        transition: border-color 0.8s ease;
+      }
+      a,
+      p,
+      h1,
+      h2,
+      h3,
+      span {
+        transition: color 0.8s ease;
+      }
+
+      .hero-name {
+        color: #3d5c4a;
+        transition: color 0.8s ease;
+      }
+      body.matrix-mode .hero-name {
+        color: #00ff41;
+      }
+
+      .rabbit-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        opacity: 0.4;
+        transition: opacity 0.25s;
+        cursor: pointer;
+      }
+
+      #rabbit-header .rabbit-svg {
+        display: inline-flex;
+        align-items: center;
+      }
+      #rabbit-header .pill-svg {
+        display: none;
+        align-items: center;
+      }
+
+      body.matrix-mode #rabbit-header .rabbit-svg {
+        display: none;
+      }
+      body.matrix-mode #rabbit-header .pill-svg {
+        display: inline-flex;
+      }
+
+      #rabbit-connect .rabbit-svg {
+        display: inline-flex;
+        align-items: center;
+      }
+      #rabbit-connect .pill-svg {
+        display: none;
+        align-items: center;
+      }
+
+      body.matrix-mode #rabbit-connect .rabbit-svg {
+        display: none;
+      }
+      body.matrix-mode #rabbit-connect .pill-svg {
+        display: inline-flex;
+      }
+
       #matrix-overlay {
         position: fixed;
         inset: 0;
@@ -159,71 +242,10 @@ import Analytics from "@vercel/analytics/astro";
           opacity: 0;
         }
       }
-
-      #blue-pill {
-        position: fixed;
-        bottom: 2.5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1010;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.8s ease;
-      }
-
-      #blue-pill.visible {
-        opacity: 1;
-        pointer-events: all;
-      }
-
-      #blue-pill button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        display: flex;
-        align-items: center;
-      }
-
-      .pill-icon {
-        animation: pill-pulse 2.5s ease-in-out infinite;
-      }
-
-      @keyframes pill-pulse {
-        0%,
-        100% {
-          filter: drop-shadow(0 0 2px #4a90d940);
-        }
-        50% {
-          filter: drop-shadow(0 0 6px #4a90d960);
-        }
-      }
-
-      .rabbit-btn {
-        background: none;
-        border: none;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        color: var(--subtle, #c9c2b8);
-        opacity: 0.4;
-        transition: opacity 0.25s;
-      }
-
-      button.rabbit-btn {
-        cursor: pointer;
-      }
-      span.rabbit-btn {
-        cursor: default;
-      }
-      button.rabbit-btn:hover {
-        opacity: 0.7;
-      }
-    </style></head
-  >
+    </style>
+  </head>
 
   <body>
-    <!-- ── MATRIX OVERLAY ── -->
     <div id="matrix-overlay">
       <canvas id="matrix-canvas"></canvas>
       <div id="typewriter-wrap">
@@ -234,57 +256,16 @@ import Analytics from "@vercel/analytics/astro";
       </div>
     </div>
 
-    <!-- ── BLUE PILL ── -->
-    <div id="blue-pill">
-      <button id="blue-pill-btn" aria-label="Take the blue pill">
-        <svg
-          class="pill-icon"
-          width="32"
-          height="16"
-          viewBox="0 0 48 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="1"
-            y="1"
-            width="46"
-            height="22"
-            rx="11"
-            fill="#0A1628"
-            stroke="#4A90D9"
-            stroke-width="1.5"></rect>
-          <line
-            x1="24"
-            y1="1.5"
-            x2="24"
-            y2="22.5"
-            stroke="#4A90D9"
-            stroke-width="1"
-            opacity="0.3"></line>
-          <rect
-            x="2"
-            y="2"
-            width="21"
-            height="20"
-            rx="10"
-            fill="#4A90D9"
-            opacity="0.1"></rect>
-          <ellipse cx="14" cy="9" rx="4" ry="2" fill="#7AB8F5" opacity="0.15"
-          ></ellipse>
-        </svg>
-      </button>
-    </div>
-
     <slot />
 
     <script>
       const COPY: Record<string, string> = {
         connect:
-          "Wake up...\nRobert has been searching for you.\nNone of this is real.\nBut you are.",
+          "Wake up...\nRobert has been searching for you.\nNone of this is real.\nBut you are...",
       };
 
       let matrixActive = false;
+      let matrixMode = false;
       let animFrame: number | null = null;
       let twTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -300,33 +281,26 @@ import Analytics from "@vercel/analytics/astro";
       function initCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        const columns = Math.floor(canvas.width / FONT_SIZE);
-        drops = Array(columns)
+        drops = Array(Math.floor(canvas.width / FONT_SIZE))
           .fill(1)
           .map(() => Math.random() * -50);
       }
 
       function drawMatrix() {
         if (!matrixActive) return;
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillStyle = "rgba(0,0,0,0.05)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
         for (let i = 0; i < drops.length; i++) {
           const char = CHARS[Math.floor(Math.random() * CHARS.length)];
-          const brightness = Math.random();
+          const b = Math.random();
           ctx.fillStyle =
-            brightness > 0.95
-              ? "#FFFFFF"
-              : brightness > 0.7
-                ? "#00FF41"
-                : "#008F11";
+            b > 0.95 ? "#FFFFFF" : b > 0.7 ? "#00FF41" : "#008F11";
           ctx.font = `${FONT_SIZE}px 'JetBrains Mono', monospace`;
           ctx.fillText(char, i * FONT_SIZE, drops[i] * FONT_SIZE);
           if (drops[i] * FONT_SIZE > canvas.height && Math.random() > 0.975)
             drops[i] = 0;
           drops[i] += 0.5;
         }
-
         animFrame = requestAnimationFrame(drawMatrix);
       }
 
@@ -334,7 +308,6 @@ import Analytics from "@vercel/analytics/astro";
         const el = document.getElementById("tw-content")!;
         el.textContent = "";
         let i = 0;
-
         function next() {
           if (i >= text.length) {
             twTimeout = setTimeout(onDone, 2800);
@@ -354,7 +327,7 @@ import Analytics from "@vercel/analytics/astro";
       }
 
       function triggerEgg(source: string) {
-        if (matrixActive) return;
+        if (matrixActive || matrixMode) return;
         matrixActive = true;
         initCanvas();
 
@@ -370,59 +343,109 @@ import Analytics from "@vercel/analytics/astro";
               tw.style.display = "none";
               canvas.classList.add("visible");
               drawMatrix();
+
               setTimeout(() => {
-                document.getElementById("blue-pill")!.classList.add("visible");
-              }, 2500);
+                document.body.classList.add("matrix-mode");
+                matrixMode = true;
+              }, 1200);
+
+              setTimeout(() => {
+                overlay.classList.remove("visible");
+                setTimeout(() => {
+                  matrixActive = false;
+                  if (animFrame) cancelAnimationFrame(animFrame);
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  canvas.classList.remove("visible");
+                  tw.classList.remove("fade-out");
+                  tw.style.display = "";
+                  const twContent = document.getElementById("tw-content");
+                  if (twContent) twContent.textContent = "";
+
+                  const navBtn = document.getElementById(
+                    "rabbit-header",
+                  ) as HTMLElement | null;
+                  if (navBtn) {
+                    navBtn.style.opacity = "1";
+                    navBtn.removeAttribute("title");
+                    navBtn.removeAttribute("aria-label");
+                  }
+
+                  const footerBtn = document.getElementById(
+                    "rabbit-connect",
+                  ) as HTMLElement | null;
+                  if (footerBtn) {
+                    footerBtn.style.opacity = "1";
+                    footerBtn.removeAttribute("title");
+                    footerBtn.removeAttribute("aria-label");
+                  }
+                }, 900);
+              }, 4000);
             }, 800);
           });
         }, 900);
       }
 
       function exitMatrix() {
-        if (!matrixActive) return;
-        const overlay = document.getElementById("matrix-overlay")!;
-        const pill = document.getElementById("blue-pill")!;
-        const tw = document.getElementById("typewriter-text")!;
-        const twContent = document.getElementById("tw-content")!;
-        const connectBtn = document.getElementById(
+        if (!matrixMode) return;
+        document.body.classList.remove("matrix-mode");
+        matrixMode = false;
+
+        const navBtn = document.getElementById(
+          "rabbit-header",
+        ) as HTMLElement | null;
+        if (navBtn) {
+          navBtn.style.opacity = "0.4";
+          navBtn.setAttribute("title", "Follow the white rabbit");
+          navBtn.setAttribute("aria-label", "Follow the white rabbit");
+        }
+
+        const footerBtn = document.getElementById(
           "rabbit-connect",
         ) as HTMLElement | null;
-
-        pill.classList.remove("visible");
-        overlay.classList.remove("visible");
-
-        setTimeout(() => {
-          matrixActive = false;
-          if (animFrame) cancelAnimationFrame(animFrame);
-          if (twTimeout) clearTimeout(twTimeout);
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          canvas.classList.remove("visible");
-          tw.classList.remove("fade-out");
-          tw.style.display = "";
-          twContent.textContent = "";
-          if (connectBtn) connectBtn.style.opacity = "0.4";
-        }, 900);
+        if (footerBtn) {
+          footerBtn.style.opacity = "0.4";
+          footerBtn.setAttribute(
+            "title",
+            "...and see how far the rabbit hole goes. Take the red pill.",
+          );
+          footerBtn.setAttribute(
+            "aria-label",
+            "...and see how far the rabbit hole goes. Take the red pill.",
+          );
+        }
       }
 
       document.addEventListener("DOMContentLoaded", () => {
+        const headerRabbit = document.getElementById(
+          "rabbit-header",
+        ) as HTMLElement | null;
+        if (headerRabbit) {
+          headerRabbit.style.opacity = "0.4";
+          headerRabbit.addEventListener("click", () => {
+            if (matrixMode) exitMatrix();
+          });
+        }
+
         const connectRabbit = document.getElementById(
           "rabbit-connect",
         ) as HTMLElement | null;
         if (connectRabbit) {
           connectRabbit.style.opacity = "0.4";
           connectRabbit.addEventListener("click", () => {
+            if (matrixMode) {
+              exitMatrix();
+              return;
+            }
+            if (matrixActive) return;
+            connectRabbit.style.opacity = "1";
             setTimeout(() => triggerEgg("connect"), 120);
           });
         }
-
-        document
-          .getElementById("blue-pill-btn")
-          ?.addEventListener("click", exitMatrix);
       });
 
       window.addEventListener("resize", () => {
         if (matrixActive) initCanvas();
       });
-    </script>
-  </body>
+    </script></body
+  >
 </html>

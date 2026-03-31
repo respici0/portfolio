@@ -1,5 +1,6 @@
 ---
 import WhiteRabbit from "./icons/WhiteRabbit.astro";
+import BluePill from "./icons/BluePill.astro";
 
 type NavItem = {
   href: string;
@@ -34,14 +35,20 @@ const navItems: NavItem[] = [
   <div class="nav-inner">
     <div class="nav-logo-wrap">
       <span class="nav-logo">respicio.dev</span>
-      <span
-        class="rabbit"
+      <button
         id="rabbit-header"
+        class="rabbit-btn"
         aria-label="Follow the white rabbit"
         title="Follow the white rabbit"
       >
-        <WhiteRabbit />
-      </span>
+        <span class="rabbit-svg">
+          <WhiteRabbit />
+        </span>
+
+        <span class="pill-svg">
+          <BluePill />
+        </span>
+      </button>
     </div>
 
     <button
