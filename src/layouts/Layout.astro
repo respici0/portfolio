@@ -22,75 +22,407 @@ import Analytics from "@vercel/analytics/astro";
     <meta name="generator" content={Astro.generator} />
     <title>respicio.dev</title>
     <Analytics />
-  </head>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #f9f6f2;
+        --bg-white: #ffffff;
+        --hero-name: #4a7a5c;
+        --text: #1a1a1a;
+        --muted: #6b6560;
+        --subtle: #a89f94;
+        --border: #e0d9cf;
+        --chip-bg: #f4efe8;
+        --accent: #c97d3a;
+        --accent-bg: #fbf3e8;
+        --accent-hover: #b36a2a;
+        --accent-dark: #854f0b;
+        --font-sans: "Inter", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 50px;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-sans);
+        font-size: 16px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100dvh;
+      }
+
+      .mono {
+        font-family: var(--font-mono);
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .accent {
+        color: var(--accent);
+      }
+
+      /* ─── LAYOUT ─── */
+      .page {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .divider {
+        border: none;
+        border-top: 0.5px solid var(--border);
+      }
+    </style><style is:global>
+      /* ── MATRIX OVERLAY ── */
+      #matrix-overlay {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.8s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #matrix-overlay.visible {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      #matrix-canvas {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 1.2s ease;
+      }
+
+      #matrix-canvas.visible {
+        opacity: 1;
+      }
+
+      #typewriter-wrap {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      #typewriter-text {
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(14px, 2vw, 18px);
+        color: #00ff41;
+        line-height: 1.8;
+        opacity: 1;
+        transition: opacity 0.8s ease;
+        white-space: pre;
+      }
+
+      #typewriter-text.fade-out {
+        opacity: 0;
+      }
+
+      .tw-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        background: #00ff41;
+        margin-left: 2px;
+        vertical-align: text-bottom;
+        animation: blink 0.7s step-end infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      #blue-pill {
+        position: fixed;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1010;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.8s ease;
+      }
+
+      #blue-pill.visible {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      #blue-pill button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .pill-icon {
+        animation: pill-pulse 2.5s ease-in-out infinite;
+      }
+
+      @keyframes pill-pulse {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 2px #4a90d940);
+        }
+        50% {
+          filter: drop-shadow(0 0 6px #4a90d960);
+        }
+      }
+
+      .rabbit-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        color: var(--subtle, #c9c2b8);
+        opacity: 0.4;
+        transition: opacity 0.25s;
+      }
+
+      button.rabbit-btn {
+        cursor: pointer;
+      }
+      span.rabbit-btn {
+        cursor: default;
+      }
+      button.rabbit-btn:hover {
+        opacity: 0.7;
+      }
+    </style></head
+  >
+
   <body>
+    <!-- ── MATRIX OVERLAY ── -->
+    <div id="matrix-overlay">
+      <canvas id="matrix-canvas"></canvas>
+      <div id="typewriter-wrap">
+        <div id="typewriter-text">
+          <span id="tw-content"></span>
+          <span class="tw-cursor"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLUE PILL ── -->
+    <div id="blue-pill">
+      <button id="blue-pill-btn" aria-label="Take the blue pill">
+        <svg
+          class="pill-icon"
+          width="32"
+          height="16"
+          viewBox="0 0 48 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="1"
+            y="1"
+            width="46"
+            height="22"
+            rx="11"
+            fill="#0A1628"
+            stroke="#4A90D9"
+            stroke-width="1.5"></rect>
+          <line
+            x1="24"
+            y1="1.5"
+            x2="24"
+            y2="22.5"
+            stroke="#4A90D9"
+            stroke-width="1"
+            opacity="0.3"></line>
+          <rect
+            x="2"
+            y="2"
+            width="21"
+            height="20"
+            rx="10"
+            fill="#4A90D9"
+            opacity="0.1"></rect>
+          <ellipse cx="14" cy="9" rx="4" ry="2" fill="#7AB8F5" opacity="0.15"
+          ></ellipse>
+        </svg>
+      </button>
+    </div>
+
     <slot />
+
+    <script>
+      const COPY: Record<string, string> = {
+        connect:
+          "Wake up...\nRobert has been searching for you.\nNone of this is real.\nBut you are.",
+      };
+
+      let matrixActive = false;
+      let animFrame: number | null = null;
+      let twTimeout: ReturnType<typeof setTimeout> | null = null;
+
+      const canvas = document.getElementById(
+        "matrix-canvas",
+      ) as HTMLCanvasElement;
+      const ctx = canvas.getContext("2d")!;
+      const CHARS =
+        "ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const FONT_SIZE = 14;
+      let drops: number[] = [];
+
+      function initCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const columns = Math.floor(canvas.width / FONT_SIZE);
+        drops = Array(columns)
+          .fill(1)
+          .map(() => Math.random() * -50);
+      }
+
+      function drawMatrix() {
+        if (!matrixActive) return;
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < drops.length; i++) {
+          const char = CHARS[Math.floor(Math.random() * CHARS.length)];
+          const brightness = Math.random();
+          ctx.fillStyle =
+            brightness > 0.95
+              ? "#FFFFFF"
+              : brightness > 0.7
+                ? "#00FF41"
+                : "#008F11";
+          ctx.font = `${FONT_SIZE}px 'JetBrains Mono', monospace`;
+          ctx.fillText(char, i * FONT_SIZE, drops[i] * FONT_SIZE);
+          if (drops[i] * FONT_SIZE > canvas.height && Math.random() > 0.975)
+            drops[i] = 0;
+          drops[i] += 0.5;
+        }
+
+        animFrame = requestAnimationFrame(drawMatrix);
+      }
+
+      function typewrite(text: string, onDone: () => void) {
+        const el = document.getElementById("tw-content")!;
+        el.textContent = "";
+        let i = 0;
+
+        function next() {
+          if (i >= text.length) {
+            twTimeout = setTimeout(onDone, 2800);
+            return;
+          }
+          const ch = text[i++];
+          el.textContent += ch;
+          let delay = 110;
+          if (ch === ".") delay = 600;
+          else if (ch === "?") delay = 400;
+          else if (ch === ",") delay = 250;
+          else if (ch === "\n") delay = 900;
+          else if (ch === " ") delay = 80;
+          twTimeout = setTimeout(next, delay);
+        }
+        next();
+      }
+
+      function triggerEgg(source: string) {
+        if (matrixActive) return;
+        matrixActive = true;
+        initCanvas();
+
+        const overlay = document.getElementById("matrix-overlay")!;
+        overlay.classList.add("visible");
+
+        setTimeout(() => {
+          typewrite(COPY[source], () => {
+            const tw = document.getElementById("typewriter-text")!;
+            tw.classList.add("fade-out");
+
+            setTimeout(() => {
+              tw.style.display = "none";
+              canvas.classList.add("visible");
+              drawMatrix();
+              setTimeout(() => {
+                document.getElementById("blue-pill")!.classList.add("visible");
+              }, 2500);
+            }, 800);
+          });
+        }, 900);
+      }
+
+      function exitMatrix() {
+        if (!matrixActive) return;
+        const overlay = document.getElementById("matrix-overlay")!;
+        const pill = document.getElementById("blue-pill")!;
+        const tw = document.getElementById("typewriter-text")!;
+        const twContent = document.getElementById("tw-content")!;
+        const connectBtn = document.getElementById(
+          "rabbit-connect",
+        ) as HTMLElement | null;
+
+        pill.classList.remove("visible");
+        overlay.classList.remove("visible");
+
+        setTimeout(() => {
+          matrixActive = false;
+          if (animFrame) cancelAnimationFrame(animFrame);
+          if (twTimeout) clearTimeout(twTimeout);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          canvas.classList.remove("visible");
+          tw.classList.remove("fade-out");
+          tw.style.display = "";
+          twContent.textContent = "";
+          if (connectBtn) connectBtn.style.opacity = "0.4";
+        }, 900);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const connectRabbit = document.getElementById(
+          "rabbit-connect",
+        ) as HTMLElement | null;
+        if (connectRabbit) {
+          connectRabbit.style.opacity = "0.4";
+          connectRabbit.addEventListener("click", () => {
+            setTimeout(() => triggerEgg("connect"), 120);
+          });
+        }
+
+        document
+          .getElementById("blue-pill-btn")
+          ?.addEventListener("click", exitMatrix);
+      });
+
+      window.addEventListener("resize", () => {
+        if (matrixActive) initCanvas();
+      });
+    </script>
   </body>
 </html>
-
-<style>
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  :root {
-    --bg: #f9f6f2;
-    --bg-white: #ffffff;
-    --hero-name: #4a7a5c;
-    --text: #1a1a1a;
-    --muted: #6b6560;
-    --subtle: #a89f94;
-    --border: #e0d9cf;
-    --chip-bg: #f4efe8;
-    --accent: #c97d3a;
-    --accent-bg: #fbf3e8;
-    --accent-hover: #b36a2a;
-    --accent-dark: #854f0b;
-    --font-sans: "Inter", sans-serif;
-    --font-mono: "JetBrains Mono", monospace;
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 70px;
-  }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100dvh;
-  }
-
-  .mono {
-    font-family: var(--font-mono);
-  }
-  .muted {
-    color: var(--muted);
-  }
-  .accent {
-    color: var(--accent);
-  }
-
-  /* ─── LAYOUT ─── */
-  .page {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-
-  .divider {
-    border: none;
-    border-top: 0.5px solid var(--border);
-  }
-</style>

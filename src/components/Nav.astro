@@ -1,4 +1,6 @@
 ---
+import WhiteRabbit from "./icons/WhiteRabbit.astro";
+
 type NavItem = {
   href: string;
   name: string;
@@ -30,7 +32,18 @@ const navItems: NavItem[] = [
 
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="#">respicio.dev</a>
+    <div class="nav-logo-wrap">
+      <span class="nav-logo">respicio.dev</span>
+      <span
+        class="rabbit"
+        id="rabbit-header"
+        aria-label="Follow the white rabbit"
+        title="Follow the white rabbit"
+      >
+        <WhiteRabbit />
+      </span>
+    </div>
+
     <button
       class="hamburger"
       id="hamburger"
@@ -99,6 +112,13 @@ const navItems: NavItem[] = [
     border-bottom: 0.5px solid var(--border);
   }
 
+  .nav-logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
   .nav-logo {
     font-family: var(--font-mono);
     font-size: 14px;
@@ -106,6 +126,17 @@ const navItems: NavItem[] = [
     color: var(--accent);
     letter-spacing: -0.02em;
     text-decoration: none;
+  }
+
+  .rabbit {
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: var(--subtle);
+    opacity: 0.4;
+    transition: opacity 0.25s;
   }
 
   .hamburger {
