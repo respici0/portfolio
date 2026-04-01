@@ -514,6 +514,11 @@ import Analytics from "@vercel/analytics/astro";
         document.body.classList.remove("rabbit-clicked");
         matrixMode = false;
 
+        setTimeout(() => {
+          const topBtn = document.querySelector(".top-cta") as HTMLElement | null;
+          if (topBtn) topBtn.click();
+        }, 50);
+
         if (twTimeouts.nav) clearTimeout(twTimeouts.nav);
         const navTw = document.getElementById("nav-typewriter") as HTMLElement | null;
         const logoText = document.getElementById("nav-logo-text") as HTMLElement | null;
