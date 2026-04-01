@@ -171,7 +171,6 @@ import Analytics from "@vercel/analytics/astro";
         padding: 0;
         display: inline-flex;
         align-items: center;
-        opacity: 0.75;
         transition: opacity 0.25s;
         cursor: pointer;
       }
@@ -332,8 +331,7 @@ import Analytics from "@vercel/analytics/astro";
       <canvas id="matrix-canvas"></canvas>
       <div id="typewriter-wrap">
         <div id="typewriter-text">
-          <span id="tw-content"></span>
-          <span class="tw-cursor"></span>
+          <span id="tw-content"></span><span class="tw-cursor"></span>
         </div>
       </div>
     </div>
@@ -344,7 +342,7 @@ import Analytics from "@vercel/analytics/astro";
     <script>
       const COPY: Record<string, string> = {
         connect:
-          "Robert has been searching for you.\nNone of this is real.\n...It's time to wake up.\n",
+          "He's been looking for you.\n...None of this is real.\nWake up.",
       };
 
       let matrixActive = false;
@@ -588,7 +586,6 @@ import Analytics from "@vercel/analytics/astro";
                     canvas.classList.remove("visible");
                     tw.classList.remove("fade-out");
                     tw.style.display = "";
-                    const twContent = document.getElementById("tw-content");
                     if (twContent) twContent.textContent = "";
 
                     const navBtn = document.getElementById(
@@ -609,7 +606,7 @@ import Analytics from "@vercel/analytics/astro";
       }
 
       function exitMatrix() {
-        if (!matrixMode) return;
+        if (!matrixMode || matrixActive) return;
         restoreNavCorruption();
         document.body.classList.remove("matrix-mode");
         document.body.classList.remove("rabbit-seen");
@@ -676,11 +673,12 @@ import Analytics from "@vercel/analytics/astro";
           hpf.connect(gain);
           gain.connect(actx.destination);
           src.start();
+          src.onended = () => actx.close();
         } catch (_) {}
       }
 
       function flickerExit() {
-        if (!matrixMode) return;
+        if (!matrixMode || matrixActive) return;
 
         const TOTAL = 2200;
         const P1 = TOTAL * 0.35;
