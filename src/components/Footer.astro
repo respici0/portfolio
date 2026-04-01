@@ -1,6 +1,7 @@
 ---
 import WhiteRabbit from "./icons/WhiteRabbit.astro";
 import BluePill from "./icons/BluePill.astro";
+import RedPill from "./icons/RedPill.astro";
 ---
 
 <footer class="footer-note">
@@ -10,21 +11,41 @@ import BluePill from "./icons/BluePill.astro";
     about the process ↗
   </p>
   <div class="footer-note-wrapper">
-    · Built with Astro · © 2026
-    <button
-      id="rabbit-connect"
-      class="rabbit-btn"
-      aria-label="...and see how far the rabbit hole goes."
-      title="...and see how far the rabbit hole goes."
-      style="vertical-align: middle; margin-left: 2px;"
-    >
-      <span class="rabbit-svg">
-        <WhiteRabbit />
-      </span>
+    <span id="footer-static">
+      · Built with Astro · © 2026
+      <button
+        id="rabbit-connect"
+        class="rabbit-btn"
+        style="vertical-align: middle; margin-left: 2px;"
+      >
+        <span class="footer-rabbit-icons">
+          <span class="rabbit-svg">
+            <WhiteRabbit />
+          </span>
+          <span class="pill-svg">
+            <BluePill />
+          </span>
+        </span>
+      </button>
+    </span>
 
-      <span class="pill-svg">
-        <BluePill />
-      </span>
+    <span
+      id="footer-typewriter"
+      style="display:none;color:#00ff41;white-space:nowrap;"
+    >
+      <span id="footer-tw-content"></span>
+      <span
+        class="tw-cursor"
+        style="height:0.8em;width:1px;background:#00ff41;transition:background 0.8s ease;"
+      ></span>
+    </span>
+
+    <button
+      id="red-pill-btn"
+      class="rabbit-btn"
+      style="opacity:0;pointer-events:none;transition:opacity 0.8s ease;vertical-align:middle;margin-left:6px;"
+    >
+      <RedPill />
     </button>
   </div>
 </footer>
@@ -41,10 +62,7 @@ import BluePill from "./icons/BluePill.astro";
   }
 
   .footer-note-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
+    text-align: center;
     text-decoration: none;
   }
 

@@ -123,6 +123,40 @@ import Analytics from "@vercel/analytics/astro";
         transition: color 0.8s ease;
       }
 
+      body.flicker-mode,
+      body.flicker-mode *,
+      body.flicker-mode nav,
+      body.flicker-mode footer,
+      body.flicker-mode .section,
+      body.flicker-mode .hero,
+      body.flicker-mode a,
+      body.flicker-mode p,
+      body.flicker-mode h1,
+      body.flicker-mode h2,
+      body.flicker-mode h3,
+      body.flicker-mode span {
+        transition: none !important;
+        animation-duration: 0s !important;
+      }
+
+      #scanline-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.09) 2px,
+          rgba(0, 0, 0, 0.09) 4px
+        );
+      }
+      #scanline-overlay.active {
+        opacity: 1;
+      }
+
       .hero-name {
         color: #3d5c4a;
         transition: color 0.8s ease;
@@ -137,7 +171,6 @@ import Analytics from "@vercel/analytics/astro";
         padding: 0;
         display: inline-flex;
         align-items: center;
-        opacity: 0.4;
         transition: opacity 0.25s;
         cursor: pointer;
       }
@@ -174,8 +207,50 @@ import Analytics from "@vercel/analytics/astro";
         display: inline-flex;
       }
 
+      #rabbit-connect {
+        display: none;
+      }
+
+      body.rabbit-seen #rabbit-connect {
+        display: inline-flex;
+        align-items: center;
+      }
+
       body.matrix-mode #rabbit-connect {
         display: none;
+      }
+
+      body.rabbit-clicked #rabbit-header .rabbit-svg {
+        display: none !important;
+      }
+
+      #nav-typewriter {
+        background: #000000;
+        padding: 0 6px;
+        border-radius: 3px;
+        font-family: var(--font-mono);
+        font-weight: 400;
+        color: #00ff41;
+        transition:
+          background 0.8s ease,
+          color 0.8s ease;
+      }
+
+      body.matrix-mode #nav-typewriter {
+        background: #000000;
+        color: #00cc33;
+      }
+
+      body.matrix-mode #nav-typewriter .tw-cursor {
+        background: #00cc33;
+      }
+
+      #footer-typewriter {
+        background: #000000;
+        padding: 0 5px;
+        border-radius: 3px;
+        align-items: center;
+        gap: 0;
       }
 
       #matrix-overlay {
@@ -256,24 +331,28 @@ import Analytics from "@vercel/analytics/astro";
       <canvas id="matrix-canvas"></canvas>
       <div id="typewriter-wrap">
         <div id="typewriter-text">
-          <span id="tw-content"></span>
-          <span class="tw-cursor"></span>
+          <span id="tw-content"></span><span class="tw-cursor"></span>
         </div>
       </div>
     </div>
+    <div id="scanline-overlay"></div>
 
     <slot />
 
     <script>
       const COPY: Record<string, string> = {
         connect:
-          "Robert has been searching for you.\nNone of this is real.\nBut you are...\nIt's time to wake up...\n",
+          "He's been looking for you.\n...None of this is real.\nWake up.",
       };
 
       let matrixActive = false;
       let matrixMode = false;
       let animFrame: number | null = null;
-      let twTimeout: ReturnType<typeof setTimeout> | null = null;
+      const twTimeouts: Record<string, ReturnType<typeof setTimeout> | null> = {
+        overlay: null,
+        nav: null,
+        footer: null,
+      };
 
       const canvas = document.getElementById(
         "matrix-canvas",
@@ -281,6 +360,45 @@ import Analytics from "@vercel/analytics/astro";
       const ctx = canvas.getContext("2d")!;
       const CHARS =
         "ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+      function corruptMiddle(text: string): string {
+        return text.replace(/[a-zA-Z]{3,}/g, (word) => {
+          const chars = word.split("");
+          for (let i = 1; i < chars.length - 1; i++) {
+            chars[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          }
+          return chars.join("");
+        });
+      }
+
+      function applyNavCorruption() {
+        document
+          .querySelectorAll<HTMLElement>(".nav-links a, .section-label")
+          .forEach((el) => {
+            el.dataset.original = el.textContent ?? "";
+            el.textContent = corruptMiddle(el.textContent ?? "");
+          });
+        const logo = document.getElementById(
+          "nav-logo-text",
+        ) as HTMLElement | null;
+        if (logo && logo.style.display !== "none") {
+          logo.dataset.original = logo.textContent ?? "";
+          logo.textContent = corruptMiddle(logo.textContent ?? "");
+        }
+      }
+
+      function restoreNavCorruption() {
+        document
+          .querySelectorAll<HTMLElement>(".nav-links a, .section-label")
+          .forEach((el) => {
+            if (el.dataset.original) el.textContent = el.dataset.original;
+          });
+        const logo = document.getElementById(
+          "nav-logo-text",
+        ) as HTMLElement | null;
+        if (logo && logo.dataset.original)
+          logo.textContent = logo.dataset.original;
+      }
       const FONT_SIZE = 14;
       let drops: number[] = [];
 
@@ -310,26 +428,88 @@ import Analytics from "@vercel/analytics/astro";
         animFrame = requestAnimationFrame(drawMatrix);
       }
 
-      function typewrite(text: string, onDone: () => void) {
-        const el = document.getElementById("tw-content")!;
-        el.textContent = "";
+      type TwDelays = {
+        char: number;
+        dot: number;
+        space: number;
+        question?: number;
+        comma?: number;
+        newline?: number;
+        end?: number;
+      };
+
+      const TW_DELAYS: Record<string, TwDelays> = {
+        overlay: {
+          char: 50,
+          dot: 400,
+          space: 40,
+          question: 200,
+          comma: 50,
+          newline: 700,
+          end: 2800,
+        },
+        nav: { char: 80, dot: 260, space: 55 },
+        footer: { char: 70, dot: 280, space: 50 },
+      };
+
+      function typewrite(
+        key: string,
+        elementId: string,
+        text: string,
+        onDone: () => void,
+      ) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const target = el;
+        target.textContent = "";
+        const d = TW_DELAYS[key];
         let i = 0;
         function next() {
           if (i >= text.length) {
-            twTimeout = setTimeout(onDone, 2800);
+            twTimeouts[key] = setTimeout(onDone, d.end ?? 0);
             return;
           }
           const ch = text[i++];
-          el.textContent += ch;
-          let delay = 110;
-          if (ch === ".") delay = 600;
-          else if (ch === "?") delay = 400;
-          else if (ch === ",") delay = 250;
-          else if (ch === "\n") delay = 900;
-          else if (ch === " ") delay = 80;
-          twTimeout = setTimeout(next, delay);
+          target.textContent += ch;
+          let delay = d.char;
+          if (ch === ".") delay = d.dot;
+          else if (ch === " ") delay = d.space;
+          else if (ch === "?" && d.question) delay = d.question;
+          else if (ch === "," && d.comma) delay = d.comma;
+          else if (ch === "\n" && d.newline) delay = d.newline;
+          twTimeouts[key] = setTimeout(next, delay);
         }
         next();
+      }
+
+      function triggerNavTypewriter() {
+        if (document.body.classList.contains("rabbit-seen")) return;
+
+        const logoText = document.getElementById(
+          "nav-logo-text",
+        ) as HTMLElement | null;
+        const navTw = document.getElementById(
+          "nav-typewriter",
+        ) as HTMLElement | null;
+
+        if (!logoText || !navTw) return;
+
+        logoText.style.transition = "opacity 0.3s";
+        logoText.style.opacity = "0";
+
+        document.body.classList.add("rabbit-seen");
+        document.body.classList.add("rabbit-clicked");
+
+        setTimeout(() => {
+          logoText.style.display = "none";
+          navTw.style.display = "inline-flex";
+          typewrite(
+            "nav",
+            "nav-tw-content",
+            "Follow the white rabbit...",
+            () => {},
+          );
+        }, 320);
       }
 
       function triggerEgg(source: string) {
@@ -341,85 +521,334 @@ import Analytics from "@vercel/analytics/astro";
         overlay.classList.add("visible");
 
         setTimeout(() => {
-          typewrite(COPY[source], () => {
+          typewrite("overlay", "tw-content", COPY[source], () => {
             const tw = document.getElementById("typewriter-text")!;
-            tw.classList.add("fade-out");
+            const twContent = document.getElementById("tw-content")!;
+            const finalText = twContent.textContent ?? "";
+
+            const scrambleInterval = setInterval(() => {
+              twContent.textContent = finalText
+                .split("")
+                .map((ch) =>
+                  ch === "\n" || ch === " "
+                    ? ch
+                    : CHARS[Math.floor(Math.random() * CHARS.length)],
+                )
+                .join("");
+            }, 45);
 
             setTimeout(() => {
-              tw.style.display = "none";
-              canvas.classList.add("visible");
-              drawMatrix();
+              clearInterval(scrambleInterval);
+              tw.classList.add("fade-out");
 
               setTimeout(() => {
-                document.body.classList.add("matrix-mode");
-                matrixMode = true;
-              }, 1200);
+                tw.style.display = "none";
+                canvas.classList.add("visible");
+                drawMatrix();
 
-              setTimeout(() => {
-                overlay.classList.remove("visible");
                 setTimeout(() => {
-                  matrixActive = false;
-                  if (twTimeout) clearTimeout(twTimeout);
-                  if (animFrame) cancelAnimationFrame(animFrame);
-                  ctx.clearRect(0, 0, canvas.width, canvas.height);
-                  canvas.classList.remove("visible");
-                  tw.classList.remove("fade-out");
-                  tw.style.display = "";
-                  const twContent = document.getElementById("tw-content");
-                  if (twContent) twContent.textContent = "";
-
-                  const navBtn = document.getElementById(
-                    "rabbit-header",
+                  document.body.classList.add("matrix-mode");
+                  matrixMode = true;
+                  const topBtn = document.querySelector(
+                    ".top-cta",
                   ) as HTMLElement | null;
-                  if (navBtn && matrixMode) {
-                    navBtn.style.opacity = "1";
-                    navBtn.removeAttribute("title");
-                    navBtn.removeAttribute("aria-label");
+                  if (topBtn) topBtn.click();
+                  applyNavCorruption();
+                  if (document.body.classList.contains("rabbit-seen")) {
+                    if (twTimeouts.nav) clearTimeout(twTimeouts.nav);
+                    typewrite(
+                      "nav",
+                      "nav-tw-content",
+                      "Take the blue pill",
+                      () => {},
+                    );
                   }
-
-                  const footerBtn = document.getElementById(
-                    "rabbit-connect",
+                  const footerStatic = document.getElementById(
+                    "footer-static",
                   ) as HTMLElement | null;
-                  if (footerBtn && matrixMode) {
-                    footerBtn.style.opacity = "1";
-                    footerBtn.removeAttribute("title");
-                    footerBtn.removeAttribute("aria-label");
+                  const footerTw = document.getElementById(
+                    "footer-typewriter",
+                  ) as HTMLElement | null;
+                  const redPillBtn = document.getElementById(
+                    "red-pill-btn",
+                  ) as HTMLElement | null;
+                  if (footerStatic) footerStatic.style.display = "";
+                  if (footerTw) footerTw.style.display = "none";
+                  if (redPillBtn) {
+                    redPillBtn.style.opacity = "0";
+                    redPillBtn.style.pointerEvents = "none";
                   }
-                }, 900);
-              }, 4000);
-            }, 800);
+                }, 1200);
+
+                setTimeout(() => {
+                  overlay.classList.remove("visible");
+                  setTimeout(() => {
+                    matrixActive = false;
+                    if (twTimeouts.overlay) clearTimeout(twTimeouts.overlay);
+                    if (animFrame) cancelAnimationFrame(animFrame);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    canvas.classList.remove("visible");
+                    tw.classList.remove("fade-out");
+                    tw.style.display = "";
+                    if (twContent) twContent.textContent = "";
+
+                    const navBtn = document.getElementById(
+                      "rabbit-header",
+                    ) as HTMLElement | null;
+                    if (navBtn && matrixMode) navBtn.style.opacity = "1";
+
+                    const footerBtn = document.getElementById(
+                      "rabbit-connect",
+                    ) as HTMLElement | null;
+                    if (footerBtn && matrixMode) footerBtn.style.opacity = "1";
+                  }, 900);
+                }, 4000);
+              }, 800);
+            }, 700);
           });
         }, 900);
       }
 
       function exitMatrix() {
-        if (!matrixMode) return;
+        if (!matrixMode || matrixActive) return;
+        restoreNavCorruption();
         document.body.classList.remove("matrix-mode");
+        document.body.classList.remove("rabbit-seen");
+        document.body.classList.remove("rabbit-clicked");
         matrixMode = false;
 
-        const navBtn = document.getElementById(
-          "rabbit-header",
+        setTimeout(() => {
+          const topBtn = document.querySelector(
+            ".top-cta",
+          ) as HTMLElement | null;
+          if (topBtn) topBtn.click();
+        }, 50);
+
+        if (twTimeouts.nav) clearTimeout(twTimeouts.nav);
+        const navTw = document.getElementById(
+          "nav-typewriter",
         ) as HTMLElement | null;
-        if (navBtn) {
-          navBtn.style.opacity = "0.4";
-          navBtn.setAttribute("title", "Follow the white rabbit");
-          navBtn.setAttribute("aria-label", "Follow the white rabbit");
+        const logoText = document.getElementById(
+          "nav-logo-text",
+        ) as HTMLElement | null;
+        if (navTw) navTw.style.display = "none";
+        if (logoText) {
+          logoText.style.display = "";
+          logoText.style.opacity = "1";
         }
 
-        const footerBtn = document.getElementById(
-          "rabbit-connect",
+        const footerStatic = document.getElementById(
+          "footer-static",
         ) as HTMLElement | null;
-        if (footerBtn) {
-          footerBtn.style.opacity = "0.4";
-          footerBtn.setAttribute(
-            "title",
-            "...and see how far the rabbit hole goes. Take the red pill.",
-          );
-          footerBtn.setAttribute(
-            "aria-label",
-            "...and see how far the rabbit hole goes. Take the red pill.",
-          );
+        const footerTw = document.getElementById(
+          "footer-typewriter",
+        ) as HTMLElement | null;
+        const redPill = document.getElementById(
+          "red-pill-btn",
+        ) as HTMLElement | null;
+        if (footerStatic) footerStatic.style.display = "";
+        if (footerTw) footerTw.style.display = "none";
+        if (redPill) {
+          redPill.style.opacity = "0";
+          redPill.style.pointerEvents = "none";
         }
+      }
+
+      function playStaticNoise(durationMs: number) {
+        try {
+          const actx = new (
+            window.AudioContext || (window as any).webkitAudioContext
+          )();
+          const frames = Math.ceil((actx.sampleRate * durationMs) / 1000);
+          const buffer = actx.createBuffer(1, frames, actx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < frames; i++) {
+            const spike = Math.random() > 0.97 ? 0.85 : 0.12;
+            data[i] = (Math.random() * 2 - 1) * spike;
+          }
+          const src = actx.createBufferSource();
+          src.buffer = buffer;
+          const hpf = actx.createBiquadFilter();
+          hpf.type = "highpass";
+          hpf.frequency.value = 600;
+          const gain = actx.createGain();
+          gain.gain.value = 0.35;
+          src.connect(hpf);
+          hpf.connect(gain);
+          gain.connect(actx.destination);
+          src.start();
+          src.onended = () => actx.close();
+        } catch (_) {}
+      }
+
+      function flickerExit() {
+        if (!matrixMode || matrixActive) return;
+
+        const TOTAL = 2200;
+        const P1 = TOTAL * 0.35;
+        const P2 = TOTAL * 0.65;
+        const GLYPHS =
+          "ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789";
+
+        document.body.classList.add("flicker-mode");
+
+        const scanlines = document.getElementById("scanline-overlay");
+        if (scanlines) scanlines.classList.add("active");
+
+        playStaticNoise(TOTAL);
+
+        const logoEl = document.getElementById(
+          "nav-logo-text",
+        ) as HTMLElement | null;
+        const twEl = document.getElementById(
+          "nav-tw-content",
+        ) as HTMLElement | null;
+        const origLogo = logoEl?.textContent ?? "respicio.dev";
+        const origTw = twEl?.textContent ?? "";
+
+        function scramble(text: string, intensity: number): string {
+          return text
+            .split("")
+            .map((ch) =>
+              ch === " " || ch === "."
+                ? ch
+                : Math.random() < intensity
+                  ? GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+                  : ch,
+            )
+            .join("");
+        }
+
+        const shakeInterval = setInterval(() => {
+          document.body.style.transform = `translate(${(Math.random() - 0.5) * 14}px, ${(Math.random() - 0.5) * 3}px)`;
+        }, 40);
+
+        const sections = Array.from(
+          document.querySelectorAll<HTMLElement>(".section, .hero, nav"),
+        );
+        const glitchInterval = setInterval(() => {
+          sections.forEach((el) => {
+            if (Math.random() > 0.55) {
+              el.style.transform = `translateX(${(Math.random() - 0.5) * 10}px)`;
+              setTimeout(
+                () => {
+                  el.style.transform = "";
+                },
+                60 + Math.random() * 80,
+              );
+            }
+          });
+        }, 110);
+
+        const fightEls = Array.from(
+          document.querySelectorAll<HTMLElement>(
+            ".nav-links a, .section-label",
+          ),
+        ).map((el) => ({
+          el,
+          original: el.dataset.original ?? el.textContent ?? "",
+          corrupted: el.textContent ?? "",
+        }));
+
+        const frames: Array<{ on: boolean; t: number }> = [];
+        let elapsed = 0;
+
+        while (elapsed < TOTAL - 80) {
+          const phase = elapsed < P1 ? 1 : elapsed < P2 ? 2 : 3;
+          const onMs =
+            phase === 1
+              ? 130 + Math.random() * 90
+              : phase === 2
+                ? 50 + Math.random() * 60
+                : 20 + Math.random() * 35;
+          const offMs =
+            phase === 1
+              ? 20 + Math.random() * 35
+              : phase === 2
+                ? 50 + Math.random() * 60
+                : 130 + Math.random() * 90;
+          frames.push({ on: true, t: elapsed });
+          elapsed += onMs;
+          if (elapsed < TOTAL) {
+            frames.push({ on: false, t: elapsed });
+            elapsed += offMs;
+          }
+        }
+
+        frames.forEach(({ on, t }) => {
+          setTimeout(() => {
+            if (on) {
+              document.body.classList.add("matrix-mode");
+              document.body.style.filter = "brightness(1.7) contrast(1.35)";
+            } else {
+              document.body.classList.remove("matrix-mode");
+              document.body.style.filter = "";
+            }
+            if (logoEl && logoEl.style.display !== "none") {
+              logoEl.textContent = scramble(origLogo, on ? 0.85 : 0.25);
+            }
+            if (twEl) {
+              twEl.textContent = scramble(origTw, on ? 0.85 : 0.25);
+            }
+            fightEls.forEach(({ el, original, corrupted }) => {
+              el.textContent = on ? corrupted : original;
+            });
+          }, t);
+        });
+
+        setTimeout(() => {
+          clearInterval(shakeInterval);
+          clearInterval(glitchInterval);
+          document.body.style.transform = "";
+          document.body.style.filter = "";
+          if (scanlines) scanlines.classList.remove("active");
+          if (logoEl) logoEl.textContent = origLogo;
+          if (twEl) twEl.textContent = origTw;
+          restoreNavCorruption();
+
+          document.body.classList.remove("matrix-mode");
+          document.body.classList.remove("flicker-mode");
+          document.body.classList.remove("rabbit-seen");
+          document.body.classList.remove("rabbit-clicked");
+          matrixMode = false;
+
+          setTimeout(() => {
+            const topBtn = document.querySelector(
+              ".top-cta",
+            ) as HTMLElement | null;
+            if (topBtn) topBtn.click();
+          }, 50);
+
+          if (twTimeouts.nav) clearTimeout(twTimeouts.nav);
+          const navTw = document.getElementById(
+            "nav-typewriter",
+          ) as HTMLElement | null;
+          const logoText = document.getElementById(
+            "nav-logo-text",
+          ) as HTMLElement | null;
+          if (navTw) navTw.style.display = "none";
+          if (logoText) {
+            logoText.style.display = "";
+            logoText.style.opacity = "1";
+            logoText.textContent = "respicio.dev";
+          }
+
+          const footerStatic = document.getElementById(
+            "footer-static",
+          ) as HTMLElement | null;
+          const footerTw = document.getElementById(
+            "footer-typewriter",
+          ) as HTMLElement | null;
+          const redPill = document.getElementById(
+            "red-pill-btn",
+          ) as HTMLElement | null;
+          if (footerStatic) footerStatic.style.display = "";
+          if (footerTw) footerTw.style.display = "none";
+          if (redPill) {
+            redPill.style.opacity = "0";
+            redPill.style.pointerEvents = "none";
+          }
+        }, TOTAL + 60);
       }
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -427,9 +856,13 @@ import Analytics from "@vercel/analytics/astro";
           "rabbit-header",
         ) as HTMLElement | null;
         if (headerRabbit) {
-          headerRabbit.style.opacity = "0.4";
+          headerRabbit.style.opacity = "0.75";
           headerRabbit.addEventListener("click", () => {
-            if (matrixMode) exitMatrix();
+            if (matrixMode) {
+              flickerExit();
+              return;
+            }
+            triggerNavTypewriter();
           });
         }
 
@@ -437,22 +870,56 @@ import Analytics from "@vercel/analytics/astro";
           "rabbit-connect",
         ) as HTMLElement | null;
         if (connectRabbit) {
-          connectRabbit.style.opacity = "0.4";
+          connectRabbit.style.opacity = "0.75";
           connectRabbit.addEventListener("click", () => {
             if (matrixMode) {
               exitMatrix();
               return;
             }
             if (matrixActive) return;
-            connectRabbit.style.opacity = "1";
-            setTimeout(() => triggerEgg("connect"), 120);
+
+            const footerStatic = document.getElementById(
+              "footer-static",
+            ) as HTMLElement | null;
+            const footerTw = document.getElementById(
+              "footer-typewriter",
+            ) as HTMLElement | null;
+            const redPill = document.getElementById(
+              "red-pill-btn",
+            ) as HTMLElement | null;
+
+            if (footerStatic) footerStatic.style.display = "none";
+            if (footerTw) {
+              footerTw.style.display = "inline-flex";
+              typewrite(
+                "footer",
+                "footer-tw-content",
+                "...and you'll see how far the rabbit hole goes.",
+                () => {
+                  if (redPill) {
+                    redPill.style.opacity = "1";
+                    redPill.style.pointerEvents = "auto";
+                  }
+                },
+              );
+            }
           });
+
+          const redPillBtn = document.getElementById(
+            "red-pill-btn",
+          ) as HTMLElement | null;
+          if (redPillBtn) {
+            redPillBtn.addEventListener("click", () => {
+              if (matrixActive) return;
+              triggerEgg("connect");
+            });
+          }
         }
       });
 
       window.addEventListener("resize", () => {
         if (matrixActive) initCanvas();
       });
-    </script></body
-  >
+    </script>
+  </body>
 </html>
