@@ -549,6 +549,10 @@ import Analytics from "@vercel/analytics/astro";
                 setTimeout(() => {
                   document.body.classList.add("matrix-mode");
                   matrixMode = true;
+                  const topBtn = document.querySelector(
+                    ".top-cta",
+                  ) as HTMLElement | null;
+                  if (topBtn) topBtn.click();
                   applyNavCorruption();
                   if (document.body.classList.contains("rabbit-seen")) {
                     if (twTimeouts.nav) clearTimeout(twTimeouts.nav);
