@@ -34,13 +34,20 @@ const navItems: NavItem[] = [
 <nav>
   <div class="nav-inner">
     <div class="nav-logo-wrap">
-      <span class="nav-logo">respicio.dev</span>
-      <button
-        id="rabbit-header"
-        class="rabbit-btn"
-        aria-label="Follow the white rabbit"
-        title="Follow the white rabbit"
+      <span class="nav-logo" id="nav-logo-text">respicio.dev</span>
+      <span
+        class="nav-logo"
+        id="nav-typewriter"
+        style="display:none;color:#00ff41;align-items:center;gap:0;"
       >
+        <span id="nav-tw-content"></span>
+        <span
+          class="tw-cursor"
+          style="height:0.9em;width:1.5px;background:#00ff41;transition:background 0.8s ease;"
+        >
+        </span>
+      </span>
+      <button id="rabbit-header" class="rabbit-btn">
         <span class="rabbit-svg">
           <WhiteRabbit />
         </span>
