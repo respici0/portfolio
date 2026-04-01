@@ -1,260 +1,201 @@
-<div style="border-bottom:0.5px solid var(--border);">
-  <div
-    style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;"
-  >
-    <span class="tag">Fetch Rewards</span>
-    <span
-      style="font-family:var(--font-mono);font-size:11px;color:var(--muted);"
-      >2022 — 2026</span
-    >
-  </div>
-  <div
-    style="padding:0.875rem 0 0.875rem 1rem;border-top:0.5px solid var(--border);"
-  >
-    <div
-      style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;"
-    >
-      <div>
-        <p
-          style="font-size:15px;font-weight:500;color:var(--text);margin:0 0 0.4rem;"
-        >
-          Campaign Management Dashboard
-        </p>
-        <p style="font-size:13px;color:var(--muted);line-height:1.65;margin:0;">
-          Owned frontend architecture from scratch. Campaign launch time dropped
-          from days to minutes — zero regressions at go-live.
+<div class="cs-wrapper">
+  <div class="case-study" id="case-study-fetch">
+    <div class="cs-meta-grid">
+      <div class="cs-meta-card">
+        <span class="cs-meta-label">ROLE</span>
+        <span class="cs-meta-value">Frontend engineer</span>
+        <span class="cs-meta-sub">sole frontend owner</span>
+      </div>
+      <div class="cs-meta-card">
+        <span class="cs-meta-label">STACK</span>
+        <span class="cs-meta-value">SvelteKit + TypeScript</span>
+        <span class="cs-meta-sub">connectrpc · protobuf</span>
+      </div>
+      <div class="cs-meta-card">
+        <span class="cs-meta-label">OUTCOME</span>
+        <span class="cs-meta-value">Days → minutes</span>
+        <span class="cs-meta-sub">campaign launch time</span>
+      </div>
+    </div>
+
+    <div class="cs-body">
+      <span class="section-label">// the problem</span>
+      <p>
+        Campaign managers at Fetch were building and launching campaigns
+        manually — no dedicated tooling, no shared process. Work lived in
+        spreadsheets, handoffs were fragile, and every launch took days of
+        coordination.
+      </p>
+      <p>
+        This wasn't a tooling problem waiting to be solved. It was a business
+        constraint actively slowing growth.
+      </p>
+    </div>
+
+    <div class="before-after">
+      <div class="ba-card">
+        <span class="ba-label before">BEFORE</span>
+        <div class="ba-item">
+          <div class="ba-dot before"></div><p>
+            Manual data entry across spreadsheets
+          </p>
+        </div>
+        <div class="ba-item">
+          <div class="ba-dot before"></div><p>Fragile handoffs between teams</p>
+        </div>
+        <div class="ba-item">
+          <div class="ba-dot before"></div><p>
+            Days to launch a single campaign
+          </p>
+        </div>
+        <div class="ba-item">
+          <div class="ba-dot before"></div><p>No audit trail or history</p>
+        </div>
+      </div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-card">
+        <span class="ba-label after">AFTER</span>
+        <div class="ba-item after">
+          <div class="ba-dot after"></div><p>
+            Guided multi-step campaign builder
+          </p>
+        </div>
+        <div class="ba-item after">
+          <div class="ba-dot after"></div><p>
+            Single source of truth for all campaigns
+          </p>
+        </div>
+        <div class="ba-item after">
+          <div class="ba-dot after"></div><p>
+            Minutes to launch, zero regressions
+          </p>
+        </div>
+        <div class="ba-item after">
+          <div class="ba-dot after"></div><p>
+            Full history and status visibility
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-body">
+      <span class="section-label">// screenshot</span>
+      <div class="screenshot-placeholder">
+        <div class="screenshot-icon">
+          <div class="screenshot-icon-inner"></div>
+        </div>
+        <p class="screenshot-caption">redacted screenshot</p>
+        <p class="screenshot-desc">
+          campaign builder — step 2 of 4<br />details blurred for
+          confidentiality
         </p>
       </div>
-      <div
-        style="display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;flex-shrink:0;padding-left:2rem;padding-top:2px;"
-        onclick="toggleCaseStudy('fetch')"
+    </div>
+
+    <div class="cs-body">
+      <span class="section-label">// the hard parts</span>
+      <div class="hard-part">
+        <span class="hard-part-num">01</span>
+        <div>
+          <h4>Form state that actually held together</h4>
+          <p>
+            Campaign creation was a multi-step flow with deeply interdependent
+            fields — change the campaign type on step one and half of steps two
+            and three needed to adapt. Getting that state model right without
+            leaking complexity into the UI took more care than anything else on
+            this project.
+          </p>
+        </div>
+      </div>
+      <div class="hard-part">
+        <span class="hard-part-num">02</span>
+        <div>
+          <h4>Shaping the API, not just consuming it</h4>
+          <p>
+            There was no existing backend to build against. I worked closely
+            with the backend engineer to define the contracts — advocating for
+            shapes that made the UI straightforward rather than adapting to
+            whatever was easiest server-side. That collaboration made the
+            difference between a clean frontend and a messy one.
+          </p>
+        </div>
+      </div>
+      <div class="hard-part">
+        <span class="hard-part-num">03</span>
+        <div>
+          <h4>No prior art to lean on</h4>
+          <p>
+            Nothing like this existed internally. Every architectural decision
+            was a first draft — component structure, data flow, error handling
+            patterns. I kept it conservative: fewer abstractions, more readable
+            code. The next engineer who touches it should feel relief, not
+            dread.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-outcome">
+      <span class="section-label">// outcome</span>
+      <h3>
+        Campaign launch time went from days to minutes. The tool is still in
+        use.
+      </h3>
+      <p>
+        No regressions at go-live. The campaign managers who used it stopped
+        asking engineering for help with every launch — which was the whole
+        point.
+      </p>
+    </div>
+    <div class="cs-close-row">
+      <button class="cs-close-btn" onclick="closeCaseStudy('fetch')"
+        >↑ close</button
       >
-        <span class="project-link" id="fetch-toggle">case study ↗</span>
-      </div>
-    </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;">
-      <span class="chip-white">sveltekit</span>
-      <span class="chip-white">typescript</span>
-      <span class="chip-white">rest api</span>
-      <span class="chip-white">connectrpc</span>
-      <span class="chip-white">protobuf</span>
-      <span class="chip-white">tailwind css</span>
-      <span class="chip-white">vite</span>
-      <span class="chip-white">vitest</span>
-      <span class="chip-white">shadcn</span>
-      <span class="chip-white">aws</span>
-    </div>
-
-    <div class="case-study" id="case-study-fetch">
-      <div class="cs-header">
-        <div
-          style="display:flex;gap:8px;margin-bottom:1.25rem;align-items:center;"
-        >
-          <span class="tag">Fetch Rewards</span>
-          <span
-            style="font-family:var(--font-mono);font-size:11px;color:var(--muted);"
-            >2022 — 2026</span
-          >
-        </div>
-        <h2>Campaign Management Dashboard</h2>
-        <p>
-          Replacing a manual, spreadsheet-driven process with a purpose-built
-          internal tool — and getting it right the first time.
-        </p>
-      </div>
-
-      <div class="cs-meta-grid">
-        <div class="cs-meta-card">
-          <span class="cs-meta-label">ROLE</span>
-          <span class="cs-meta-value">Frontend engineer</span>
-          <span class="cs-meta-sub">sole frontend owner</span>
-        </div>
-        <div class="cs-meta-card">
-          <span class="cs-meta-label">STACK</span>
-          <span class="cs-meta-value">SvelteKit + TypeScript</span>
-          <span class="cs-meta-sub">connectrpc · protobuf</span>
-        </div>
-        <div class="cs-meta-card">
-          <span class="cs-meta-label">OUTCOME</span>
-          <span class="cs-meta-value">Days → minutes</span>
-          <span class="cs-meta-sub">campaign launch time</span>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <span class="section-label">// the problem</span>
-        <p>
-          Campaign managers at Fetch were building and launching campaigns
-          manually — no dedicated tooling, no shared process. Work lived in
-          spreadsheets, handoffs were fragile, and every launch took days of
-          coordination.
-        </p>
-        <p>
-          This wasn't a tooling problem waiting to be solved. It was a business
-          constraint actively slowing growth.
-        </p>
-      </div>
-
-      <div class="before-after">
-        <div class="ba-card">
-          <span class="ba-label before">BEFORE</span>
-          <div class="ba-item">
-            <div class="ba-dot before"></div><p>
-              Manual data entry across spreadsheets
-            </p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div><p>
-              Fragile handoffs between teams
-            </p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div><p>
-              Days to launch a single campaign
-            </p>
-          </div>
-          <div class="ba-item">
-            <div class="ba-dot before"></div><p>No audit trail or history</p>
-          </div>
-        </div>
-        <div class="ba-arrow">→</div>
-        <div class="ba-card">
-          <span class="ba-label after">AFTER</span>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div><p>
-              Guided multi-step campaign builder
-            </p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div><p>
-              Single source of truth for all campaigns
-            </p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div><p>
-              Minutes to launch, zero regressions
-            </p>
-          </div>
-          <div class="ba-item after">
-            <div class="ba-dot after"></div><p>
-              Full history and status visibility
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <span class="section-label">// screenshot</span>
-        <div class="screenshot-placeholder">
-          <div class="screenshot-icon">
-            <div class="screenshot-icon-inner"></div>
-          </div>
-          <p
-            style="font-family:var(--font-mono);font-size:11px;color:var(--muted);"
-          >
-            redacted screenshot
-          </p>
-          <p
-            style="font-size:12px;color:var(--muted);text-align:center;max-width:240px;line-height:1.6;"
-          >
-            campaign builder — step 2 of 4<br />details blurred for
-            confidentiality
-          </p>
-        </div>
-      </div>
-
-      <div class="cs-body">
-        <span class="section-label">// the hard parts</span>
-        <div class="hard-part">
-          <span class="hard-part-num">01</span>
-          <div>
-            <h4>Form state that actually held together</h4>
-            <p>
-              Campaign creation was a multi-step flow with deeply interdependent
-              fields — change the campaign type on step one and half of steps
-              two and three needed to adapt. Getting that state model right
-              without leaking complexity into the UI took more care than
-              anything else on this project.
-            </p>
-          </div>
-        </div>
-        <div class="hard-part">
-          <span class="hard-part-num">02</span>
-          <div>
-            <h4>Shaping the API, not just consuming it</h4>
-            <p>
-              There was no existing backend to build against. I worked closely
-              with the backend engineer to define the contracts — advocating for
-              shapes that made the UI straightforward rather than adapting to
-              whatever was easiest server-side. That collaboration made the
-              difference between a clean frontend and a messy one.
-            </p>
-          </div>
-        </div>
-        <div class="hard-part">
-          <span class="hard-part-num">03</span>
-          <div>
-            <h4>No prior art to lean on</h4>
-            <p>
-              Nothing like this existed internally. Every architectural decision
-              was a first draft — component structure, data flow, error handling
-              patterns. I kept it conservative: fewer abstractions, more
-              readable code. The next engineer who touches it should feel
-              relief, not dread.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="cs-outcome">
-        <span class="section-label">// outcome</span>
-        <h3>
-          Campaign launch time went from days to minutes. The tool is still in
-          use.
-        </h3>
-        <p>
-          No regressions at go-live. The campaign managers who used it stopped
-          asking engineering for help with every launch — which was the whole
-          point.
-        </p>
-      </div>
     </div>
   </div>
 </div>
 
 <style>
-  /* ─── CASE STUDY (inline expansion) ─── */
+  /* .cs-wrapper {
+    border-bottom: 0.5px solid var(--border);
+  } */
+
   .case-study {
     display: none;
     background: var(--bg-white);
     border: 0.5px solid var(--border);
     border-radius: var(--radius-lg);
     margin-top: 1rem;
+    margin-bottom: 1rem;
     overflow: hidden;
   }
 
   .case-study.open {
     display: block;
+    border-top: 0.5px solid var(--border);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    margin-top: 0;
   }
 
-  .cs-header {
-    padding: 2.5rem 2rem 2rem;
-    border-bottom: 0.5px solid var(--border);
+  .cs-close-row {
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem 2rem;
+    border-top: 0.5px solid var(--border);
   }
 
-  .cs-header h2 {
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
+  .cs-close-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
   }
 
-  .cs-header p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.75;
-    max-width: 480px;
+  .cs-close-btn:hover {
+    color: var(--accent-hover);
   }
 
   .cs-meta-grid {
@@ -266,6 +207,8 @@
   }
 
   .cs-meta-card {
+    display: flex;
+    flex-direction: column;
     background: var(--bg);
     border: 0.5px solid var(--border);
     border-radius: var(--radius-md);
@@ -273,6 +216,7 @@
   }
 
   .cs-meta-label {
+    display: block;
     font-family: var(--font-mono);
     font-size: 10px;
     color: var(--muted);
@@ -281,11 +225,13 @@
   }
 
   .cs-meta-value {
+    display: block;
     font-size: 13px;
     font-weight: 500;
   }
 
   .cs-meta-sub {
+    display: block;
     font-size: 12px;
     color: var(--muted);
     margin-top: 3px;
@@ -306,6 +252,15 @@
     margin-top: 0.75rem;
   }
 
+  .section-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
   /* before/after */
   .before-after {
     display: grid;
@@ -323,6 +278,7 @@
   }
 
   .ba-label {
+    display: block;
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.06em;
@@ -334,6 +290,13 @@
   }
   .ba-label.after {
     color: #3b6d11;
+  }
+
+  body.matrix-mode .ba-label.before {
+    color: var(--subtle);
+  }
+  body.matrix-mode .ba-label.after {
+    color: var(--accent);
   }
 
   .ba-item {
@@ -384,7 +347,7 @@
 
   /* screenshot placeholder */
   .screenshot-placeholder {
-    background: #f0ebe3;
+    background: var(--chip-bg);
     border: 0.5px solid var(--border);
     border-radius: var(--radius-md);
     height: 220px;
@@ -410,6 +373,20 @@
     height: 14px;
     border: 1.5px solid var(--subtle);
     border-radius: 2px;
+  }
+
+  .screenshot-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .screenshot-desc {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    max-width: 240px;
+    line-height: 1.6;
   }
 
   /* hard parts */
@@ -466,3 +443,50 @@
     max-width: 480px;
   }
 </style>
+
+<script>
+  function openCaseStudy(id: string) {
+    const panel = document.getElementById(`case-study-${id}`);
+    const trigger = document.getElementById(`${id}-trigger`);
+    if (!panel) return;
+
+    // ── mock fetch — comment out and replace with real endpoint ──
+    // fetch(`/api/case-studies/${id}`)
+    //   .then((res) => res.json())
+    //   .then((data) => console.log("case study data:", data));
+    // ─────────────────────────────────────────────────────────────
+
+    panel.classList.add("open");
+    if (trigger) {
+      trigger.textContent = "close ✕";
+      const projectItem = trigger.closest(".project-item");
+      if (projectItem) projectItem.classList.add("cs-open");
+    }
+  }
+
+  function closeCaseStudy(id: string) {
+    const panel = document.getElementById(`case-study-${id}`);
+    const trigger = document.getElementById(`${id}-trigger`);
+    if (!panel) return;
+
+    panel.classList.remove("open");
+    if (trigger) {
+      trigger.textContent = "case study ↗";
+      const projectItem = trigger.closest(".project-item");
+      if (projectItem) {
+        projectItem.classList.remove("cs-open");
+        projectItem.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }
+
+  function toggleCaseStudy(id: string) {
+    const panel = document.getElementById(`case-study-${id}`);
+    if (!panel) return;
+    panel.classList.contains("open") ? closeCaseStudy(id) : openCaseStudy(id);
+  }
+
+  (window as any).openCaseStudy = openCaseStudy;
+  (window as any).closeCaseStudy = closeCaseStudy;
+  (window as any).toggleCaseStudy = toggleCaseStudy;
+</script>

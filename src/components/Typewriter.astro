@@ -1,22 +1,21 @@
 ---
 interface Props {
-  class?: string;
   type: "nav" | "footer";
 }
 
-const { class: className, type } = Astro.props;
+const { type } = Astro.props;
 const typewriterStyle =
   type === "nav"
-    ? "display:none;color:#00ff41;align-items:center;gap:0;text-size:12px;"
+    ? "display:none;color:#00ff41;align-items:center;gap:0;font-size:14px;font-weight:500;letter-spacing:-0.02em;"
     : "display:none;color:#00ff41;white-space:nowrap;";
 
 const cursorStyle =
   type === "nav"
-    ? "height:0.5em;width:1.5px;background:#00ff41;transition:background 0.8s ease;"
+    ? "height:0.9em;width:1.5px;background:#00ff41;transition:background 0.8s ease;"
     : "height:0.8em;width:1px;background:#00ff41;transition:background 0.8s ease;";
 ---
 
-<span class={className || ""} id={`${type}-typewriter`} style={typewriterStyle}>
+<span id={`${type}-typewriter`} style={typewriterStyle}>
   <span id={`${type}-tw-content`}></span>
-  <span class="tw-cursor" style={cursorStyle}> </span>
+  <span class="tw-cursor" style={cursorStyle}></span>
 </span>

@@ -1,5 +1,6 @@
 ---
 import SectionLayout from "../layouts/SectionLayout.astro";
+import CaseStudy from "./CaseStudy.astro";
 import Chip from "./Chip.astro";
 
 type Project = {
@@ -8,6 +9,7 @@ type Project = {
   links: {
     type: "case study" | "case study in progress" | "live" | "github";
     url?: string;
+    projectId?: string;
   }[];
   tech: string[];
 };
@@ -40,7 +42,16 @@ const projects: Projects[] = [
           "Owned frontend architecture from scratch. Turned a multi-department campaign setup into a self-service workflow which dropped launch times from days to minutes.",
         links: [
           {
-            type: "case study in progress",
+            type: "case study",
+            projectId: "fetch",
+          },
+          {
+            type: "live",
+            url: "some.url",
+          },
+          {
+            type: "github",
+            url: "github.url",
           },
         ],
         tech: [
@@ -175,7 +186,6 @@ const projects: Projects[] = [
   description="curated, not exhaustive."
   id="work"
 >
-  <!-- <div class="project-row" onclick="toggleCaseStudy('fetch')"> -->
   {
     projects.map(({ tag, year, projects }: Projects) => (
       <div class="project-group">
@@ -192,9 +202,13 @@ const projects: Projects[] = [
                 <p class="project-desc">{description}</p>
               </div>
               <div class="links">
-                {links.map(({ type, url }) =>
+                {links.map(({ type, url, projectId }) =>
                   type === "case study" ? (
-                    <button class="project-link" id="case-study">
+                    <button
+                      class="project-link"
+                      id={`${projectId}-trigger`}
+                      onclick={`toggleCaseStudy('${projectId}')`}
+                    >
                       case study ↗
                     </button>
                   ) : type === "case study in progress" ? (
@@ -214,6 +228,7 @@ const projects: Projects[] = [
             </div>
           </div>
         ))}
+        <CaseStudy />
       </div>
     ))
   }
@@ -231,6 +246,14 @@ const projects: Projects[] = [
   .project-item {
     padding: 0.875rem 0 0.875rem 1rem;
     border-top: 0.5px solid var(--border);
+  }
+
+  .project-item.cs-open {
+    background: var(--bg-white);
+    border: 0.5px solid var(--border);
+    border-bottom: none;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding-right: 1rem;
   }
 
   .project-info {
