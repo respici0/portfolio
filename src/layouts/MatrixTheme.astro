@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <div id="matrix-overlay">
@@ -198,7 +199,7 @@
 <script>
   const COPY: Record<string, string> = {
     connect:
-      "He's been looking for you.\n...None of this is real.\nWake up.",
+      "Robert's been looking for you.\n...None of this is real.\nWake up.",
   };
 
   let matrixActive = false;
@@ -210,9 +211,7 @@
     footer: null,
   };
 
-  const canvas = document.getElementById(
-    "matrix-canvas",
-  ) as HTMLCanvasElement;
+  const canvas = document.getElementById("matrix-canvas") as HTMLCanvasElement;
   const ctx = canvas.getContext("2d")!;
   const CHARS =
     "ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -234,9 +233,7 @@
         el.dataset.original = el.textContent ?? "";
         el.textContent = corruptMiddle(el.textContent ?? "");
       });
-    const logo = document.getElementById(
-      "nav-logo-text",
-    ) as HTMLElement | null;
+    const logo = document.getElementById("nav-logo-text") as HTMLElement | null;
     if (logo && logo.style.display !== "none") {
       logo.dataset.original = logo.textContent ?? "";
       logo.textContent = corruptMiddle(logo.textContent ?? "");
@@ -249,11 +246,8 @@
       .forEach((el) => {
         if (el.dataset.original) el.textContent = el.dataset.original;
       });
-    const logo = document.getElementById(
-      "nav-logo-text",
-    ) as HTMLElement | null;
-    if (logo && logo.dataset.original)
-      logo.textContent = logo.dataset.original;
+    const logo = document.getElementById("nav-logo-text") as HTMLElement | null;
+    if (logo && logo.dataset.original) logo.textContent = logo.dataset.original;
   }
   const FONT_SIZE = 14;
   let drops: number[] = [];
@@ -273,8 +267,7 @@
     for (let i = 0; i < drops.length; i++) {
       const char = CHARS[Math.floor(Math.random() * CHARS.length)];
       const b = Math.random();
-      ctx.fillStyle =
-        b > 0.95 ? "#FFFFFF" : b > 0.7 ? "#00FF41" : "#008F11";
+      ctx.fillStyle = b > 0.95 ? "#FFFFFF" : b > 0.7 ? "#00FF41" : "#008F11";
       ctx.font = `${FONT_SIZE}px 'JetBrains Mono', monospace`;
       ctx.fillText(char, i * FONT_SIZE, drops[i] * FONT_SIZE);
       if (drops[i] * FONT_SIZE > canvas.height && Math.random() > 0.975)
@@ -474,9 +467,7 @@
     matrixMode = false;
 
     setTimeout(() => {
-      const topBtn = document.querySelector(
-        ".top-cta",
-      ) as HTMLElement | null;
+      const topBtn = document.querySelector(".top-cta") as HTMLElement | null;
       if (topBtn) topBtn.click();
     }, 50);
 
@@ -597,9 +588,7 @@
     }, 110);
 
     const fightEls = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        ".nav-links a, .section-label",
-      ),
+      document.querySelectorAll<HTMLElement>(".nav-links a, .section-label"),
     ).map((el) => ({
       el,
       original: el.dataset.original ?? el.textContent ?? "",
@@ -669,9 +658,7 @@
       matrixMode = false;
 
       setTimeout(() => {
-        const topBtn = document.querySelector(
-          ".top-cta",
-        ) as HTMLElement | null;
+        const topBtn = document.querySelector(".top-cta") as HTMLElement | null;
         if (topBtn) topBtn.click();
       }, 50);
 
