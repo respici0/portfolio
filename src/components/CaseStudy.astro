@@ -1,5 +1,13 @@
+---
+interface Props {
+  projectId: string;
+}
+
+const { projectId } = Astro.props;
+---
+
 <div class="cs-wrapper">
-  <div class="case-study" id="case-study-fetch">
+  <div class="case-study" id={`case-study-${projectId}`}>
     <div class="cs-meta-grid">
       <div class="cs-meta-card">
         <span class="cs-meta-label">ROLE</span>
@@ -148,9 +156,7 @@
       </p>
     </div>
     <div class="cs-close-row">
-      <button class="cs-close-btn" onclick="closeCaseStudy('fetch')"
-        >↑ close</button
-      >
+      <button class="cs-close-btn" data-project-id={projectId}>↑ close</button>
     </div>
   </div>
 </div>
@@ -441,6 +447,22 @@
 </style>
 
 <script>
+  document.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest(".project-link");
+    if (button instanceof HTMLElement) {
+      const id = button.dataset.projectId;
+      if (id) toggleCaseStudy(id);
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest(".cs-close-btn");
+    if (button instanceof HTMLElement) {
+      const id = button.dataset.projectId;
+      if (id) closeCaseStudy(id);
+    }
+  });
+
   function openCaseStudy(id: string) {
     const panel = document.getElementById(`case-study-${id}`);
     const trigger = document.getElementById(`${id}-trigger`);
@@ -456,7 +478,12 @@
     if (trigger) {
       trigger.textContent = "close ✕";
       const projectItem = trigger.closest(".project-item");
-      if (projectItem) projectItem.classList.add("cs-open");
+      console.log("open", projectItem);
+      if (projectItem) {
+        const chips = projectItem.querySelectorAll(".chip");
+        if (chips) chips.forEach((chip) => chip.classList.add("cs-open"));
+        projectItem.classList.add("cs-open");
+      }
     }
   }
 
@@ -470,6 +497,9 @@
       trigger.textContent = "case study ↗";
       const projectItem = trigger.closest(".project-item");
       if (projectItem) {
+        const chips = projectItem.querySelectorAll(".chip");
+        console.log("chips", chips);
+        if (chips) chips.forEach((chip) => chip.classList.remove("cs-open"));
         projectItem.classList.remove("cs-open");
         projectItem.scrollIntoView({ behavior: "smooth", block: "start" });
       }
@@ -481,8 +511,4 @@
     if (!panel) return;
     panel.classList.contains("open") ? closeCaseStudy(id) : openCaseStudy(id);
   }
-
-  (window as any).openCaseStudy = openCaseStudy;
-  (window as any).closeCaseStudy = closeCaseStudy;
-  (window as any).toggleCaseStudy = toggleCaseStudy;
 </script>

@@ -1,184 +1,12 @@
 ---
+import { type Props, type Project } from '../data/selectedWork'
 import SectionLayout from "../layouts/SectionLayout.astro";
 import CaseStudy from "./CaseStudy.astro";
 import Chip from "./Chip.astro";
 
-type Project = {
-  title: string;
-  description: string;
-  links: {
-    type: "case study" | "case study in progress" | "live" | "github";
-    url?: string;
-    projectId?: string;
-  }[];
-  tech: string[];
-};
 
-type Projects = {
-  tag: "Fetch Rewards" | "Tensoriot" | "Eleveight" | "Personal Projects";
-  year?: string;
-  projects: Project[];
-};
+const { companies } = Astro.props;
 
-const projects: Projects[] = [
-  {
-    tag: "Fetch Rewards",
-    year: "2022 - 2025",
-    projects: [
-      {
-        title: "Self-serve Dashboard Tooling",
-        description:
-          "Built a workflow enabling non-technical stakeholders to create, deploy, and maintain dashboards independently. Reducing recurring engineering involvement.",
-        links: [
-          {
-            type: "case study in progress",
-          },
-        ],
-        tech: ["npm", "internal template tool", "sst", "aws", "claude"],
-      },
-      {
-        title: "Campaign Management Dashboard",
-        description:
-          "Owned frontend architecture from scratch. Turned a multi-department campaign setup into a self-service workflow which dropped launch times from days to minutes.",
-        links: [
-          {
-            type: "case study",
-            projectId: "fetch",
-          },
-          {
-            type: "live",
-            url: "some.url",
-          },
-          {
-            type: "github",
-            url: "github.url",
-          },
-        ],
-        tech: [
-          "sveltekit",
-          "typescript",
-          "vite",
-          "vitest",
-          "tailwind",
-          "shadcn",
-          "rest api",
-          "connect rpc",
-          "protobuf",
-          "okta auth",
-          "sst",
-          "aws",
-        ],
-      },
-    ],
-  },
-  {
-    tag: "Tensoriot",
-    year: "2019 - 2022",
-    projects: [
-      {
-        title: "Real-time Translator",
-        description:
-          "Designed and built a translation tool for a Canadian client — French Canadian to English and back, powered by AWS Translate.",
-        links: [
-          {
-            type: "case study in progress",
-          },
-        ],
-        tech: ["react", "typescript", "websockets", "mui", "aws"],
-      },
-      {
-        title: "Smart Store Analytics Dashboard",
-        description:
-          "Drove the frontend for a smart store analytics dashboard that surfaced consumer dwell time (heat maps) and purchase patterns (charts) across store sections.",
-        links: [
-          {
-            type: "case study in progress",
-          },
-        ],
-        tech: [
-          "react",
-          "recharts",
-          "konva.js",
-          "rest api",
-          "websockets",
-          "aws",
-        ],
-      },
-    ],
-  },
-  {
-    tag: "Eleveight",
-    year: "2018 - 2019",
-    projects: [
-      {
-        title: "Case management platform",
-        description:
-          "Built a case management platform serving students, job seekers, schools, and social service organizations.",
-        links: [
-          {
-            type: "case study in progress",
-          },
-        ],
-        tech: ["react", "typescript", "websockets", "mui", "rest api", "aws"],
-      },
-    ],
-  },
-  {
-    tag: "Personal Projects",
-    projects: [
-      {
-        title: "respicio.dev",
-        description:
-          "My portfolio designed in collaboration with Claude, built entirely by me. The design process itself became a case study.",
-        links: [
-          {
-            type: "case study in progress",
-          },
-          {
-            type: "github",
-            url: "https://github.com/respici0/portfolio",
-          },
-        ],
-        tech: [
-          "astro",
-          "typescript",
-          "vanilla js",
-          "vanilla css",
-          "vercel",
-          "claude (ui/ux designer)",
-        ],
-      },
-      {
-        title: "Next Steps",
-        description:
-          "Full-stack with a friend. Auth, data layer, and UI built from the ground up. Features I wanted for the job search.",
-        links: [
-          {
-            type: "case study in progress",
-          },
-          {
-            type: "live",
-            url: "https://next-steps-amber.vercel.app",
-          },
-          {
-            type: "github",
-            url: "https://github.com/respici0/portfolio",
-          },
-        ],
-        tech: [
-          "Next.js",
-          "typescript",
-          "tailwind",
-          "server actions",
-          "better auth",
-          "mongodb",
-          "mongoose",
-          "vercel",
-        ],
-      },
-    ],
-  },
-];
 ---
 
 <SectionLayout
@@ -187,48 +15,50 @@ const projects: Projects[] = [
   id="work"
 >
   {
-    projects.map(({ tag, year, projects }: Projects) => (
+    companies.map(({ tag, year, projects }) => (
       <div class="project-group">
         <div class="project-header">
           <span class="project-tag">{tag}</span>
           {year && <span class="project-year">{year}</span>}
         </div>
         {/* PROJECTS */}
-        {projects.map(({ title, description, links, tech }: Project) => (
-          <div class="project-item">
-            <div class="project-info">
-              <div>
-                <p class="project-title">{title}</p>
-                <p class="project-desc">{description}</p>
+        {projects.map(
+          ({ projectId, title, description, links, tech }: Project) => (
+            <div class="project-item">
+              <div class="project-info">
+                <div>
+                  <p class="project-title">{title}</p>
+                  <p class="project-desc">{description}</p>
+                </div>
+                <div class="links">
+                  {links.map(({ type, url }) =>
+                    type === "case study" ? (
+                      <button
+                        class="project-link"
+                        id={`${projectId}-trigger`}
+                        data-project-id={`${projectId}`}
+                      >
+                        case study ↗
+                      </button>
+                    ) : type === "case study in progress" ? (
+                      <span class="project-coming-soon">{type}</span>
+                    ) : (
+                      <a class="project-link" href={url} target="_blank">
+                        {type} ↗
+                      </a>
+                    ),
+                  )}
+                </div>
               </div>
-              <div class="links">
-                {links.map(({ type, url, projectId }) =>
-                  type === "case study" ? (
-                    <button
-                      class="project-link"
-                      id={`${projectId}-trigger`}
-                      onclick={`toggleCaseStudy('${projectId}')`}
-                    >
-                      case study ↗
-                    </button>
-                  ) : type === "case study in progress" ? (
-                    <span class="project-coming-soon">{type}</span>
-                  ) : (
-                    <a class="project-link" href={url} target="_blank">
-                      {type} ↗
-                    </a>
-                  ),
-                )}
+              <div class="tech">
+                {tech.map((value) => (
+                  <Chip variant="white" {value} />
+                ))}
               </div>
             </div>
-            <div class="tech">
-              {tech.map((value) => (
-                <Chip variant="white" {value} />
-              ))}
-            </div>
-          </div>
-        ))}
-        <CaseStudy />
+             <CaseStudy {projectId}/>
+          ),
+        )}
       </div>
     ))
   }
