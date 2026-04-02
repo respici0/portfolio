@@ -15,7 +15,7 @@ export type CaseStudy = {
   };
   hardParts: {
     title: string;
-    description: string;
+    description: string | string[];
   }[];
   outcome: {
     heading: string;
@@ -31,12 +31,12 @@ export const CAMPAIGN_MANAGEMENT_DASHBOARD: CaseStudy = {
     outcome: { value: "Days → minutes", sub: "campaign launch time" },
   },
   problem: [
-    "Campaign managers at Fetch were building and launching campaigns manually — no dedicated tooling, no shared process. Work lived in spreadsheets, handoffs were fragile, and every launch took days of coordination.",
+    "Multiple departments at Fetch were building and launching campaigns manually with no dedicated tooling and no source of truth. The process lived in documents, handoffs were brittle, and every launch took days of coordination.",
     "This wasn't a tooling problem waiting to be solved. It was a business constraint actively slowing growth.",
   ],
   beforeAfter: {
     before: [
-      "Manual data entry across spreadsheets",
+      "Workflow lived in multiple documents",
       "Fragile handoffs between teams",
       "Days to launch a single campaign",
       "No audit trail or history",
@@ -44,39 +44,39 @@ export const CAMPAIGN_MANAGEMENT_DASHBOARD: CaseStudy = {
     after: [
       "Guided multi-step campaign builder",
       "Single source of truth for all campaigns",
-      "Minutes to launch, zero regressions",
+      "Minutes to launch",
       "Full history and status visibility",
     ],
   },
   screenshot: {
-    caption: "redacted screenshot",
-    description: "campaign builder — step 2 of 4\ndetails blurred for confidentiality",
+    caption: "no screenshot provided",
+    description: "for confidentiality",
   },
   hardParts: [
     {
-      title: "Form state that actually held together",
+      title: "Form state",
       description:
-        "Campaign creation was a multi-step flow with deeply interdependent fields — change the campaign type on step one and half of steps two and three needed to adapt. Getting that state model right without leaking complexity into the UI took more care than anything else on this project.",
+        "Campaign creation was a multi-step flow with interdependent fields. Change the campaign type and the next two or three fields needed to adapt. Getting that state model right without leaking complexity into the UI took more care than anything else on this project.",
     },
     {
       title: "Shaping the API, not just consuming it",
       description:
-        "There was no existing backend to build against. I worked closely with the backend engineer to define the contracts — advocating for shapes that made the UI straightforward rather than adapting to whatever was easiest server-side. That collaboration made the difference between a clean frontend and a messy one.",
+        ["There was no existing backend to build against. I worked with the backend engineers to define the contracts early, and it was a genuine collaboration. I pushed for shapes that made the UI straightforward. They pushed back where things weren't feasible. That back and forth made the difference between a clean frontend and a messy one.", "We started with REST, but toward the end of the project we migrated to gRPC on the backend and I adopted ConnectRPC on the frontend. Going contract first made the integration cleaner and gave both sides a shared source of truth to build against."],
     },
     {
-      title: "No prior art to lean on",
+      title: "I lived in the ambiguity",
       description:
-        "Nothing like this existed internally. Every architectural decision was a first draft — component structure, data flow, error handling patterns. I kept it conservative: fewer abstractions, more readable code. The next engineer who touches it should feel relief, not dread.",
+       "Nothing like this existed internally. No designs to lean on. Every decision was a first draft. Component structure, data flow, error handling patterns. There were multiple component libraries in play, none fully built out. Consistency suffered and became a moving target. Scope grew after the fact. Components that weren't built for it ended up carrying business logic they shouldn't have.",
     },
   ],
   outcome: {
-    heading: "Campaign launch time went from days to minutes. The tool is still in use.",
-    body: "No regressions at go-live. The campaign managers who used it stopped asking engineering for help with every launch — which was the whole point.",
+    heading: "Campaign launch time went from days to minutes.",
+    body: "It collapsed a multi-department process down to a single campaign manager, reduced manual errors, and gave the team visibility through logging. No more pulling in engineering for every launch. The tool is still in use.",
   },
   thoughts: [
-    "If I were starting over, I'd push harder for a design system earlier. We made consistent UI decisions, but they lived in our heads rather than in shared components — which cost time during handoffs.",
-    "The protobuf contract process was painful at first but ended up being one of the best parts of the project. Having a typed contract between frontend and backend caught issues before they became bugs.",
-    "I underestimated how much the product would evolve during development. Building flexibility into the state model upfront would have saved several rounds of refactoring.",
+    "If I were starting over, I'd push harder for a design system earlier. We never landed on a shared component library, so I built most components from scratch. It added friction, but it kept the UI consistent on my terms.",
+    "Switching to protobuf was painful at first but ended up being one of the best parts of the project. Having a typed contract between frontend and backend caught issues before they became bugs.",
+    "I underestimated how much the product would evolve during development. Building flexibility into the components and state models would have saved several rounds of refactoring.",
   ],
 };
 

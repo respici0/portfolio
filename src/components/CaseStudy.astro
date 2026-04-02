@@ -11,7 +11,7 @@ if (!caseStudy) return;
 ---
 
 <div class="cs-wrapper">
-  <div class="case-study" id={`case-study-${projectId}`}>
+  <div class="case-study open" id={`case-study-${projectId}`}>
     <div class="cs-meta-grid">
       <div class="cs-meta-card">
         <span class="cs-meta-label">ROLE</span>
@@ -20,131 +20,92 @@ if (!caseStudy) return;
       </div>
       <div class="cs-meta-card">
         <span class="cs-meta-label">STACK</span>
-        <span class="cs-meta-value">SvelteKit + TypeScript</span>
-        <span class="cs-meta-sub">connectrpc · protobuf</span>
+        <span class="cs-meta-value">{caseStudy.meta.stack.value}</span>
+        <span class="cs-meta-sub">{caseStudy.meta.stack.sub}</span>
       </div>
       <div class="cs-meta-card">
         <span class="cs-meta-label">OUTCOME</span>
-        <span class="cs-meta-value">Days → minutes</span>
-        <span class="cs-meta-sub">campaign launch time</span>
+        <span class="cs-meta-value">{caseStudy.meta.outcome.value}</span>
+        <span class="cs-meta-sub">{caseStudy.meta.outcome.sub}</span>
       </div>
     </div>
 
     <div class="cs-body">
       <span class="section-label">// the problem</span>
-      <p>
-        Campaign managers at Fetch were building and launching campaigns
-        manually — no dedicated tooling, no shared process. Work lived in
-        spreadsheets, handoffs were fragile, and every launch took days of
-        coordination.
-      </p>
-      <p>
-        This wasn't a tooling problem waiting to be solved. It was a business
-        constraint actively slowing growth.
-      </p>
+      {caseStudy.problem.map((p) => <p>{p}</p>)}
     </div>
 
     <div class="before-after">
       <div class="ba-card">
         <span class="ba-label before">BEFORE</span>
-        <div class="ba-item">
-          <div class="ba-dot before"></div><p>
-            Manual data entry across spreadsheets
-          </p>
-        </div>
-        <div class="ba-item">
-          <div class="ba-dot before"></div><p>Fragile handoffs between teams</p>
-        </div>
-        <div class="ba-item">
-          <div class="ba-dot before"></div><p>
-            Days to launch a single campaign
-          </p>
-        </div>
-        <div class="ba-item">
-          <div class="ba-dot before"></div><p>No audit trail or history</p>
-        </div>
+        {
+          caseStudy.beforeAfter.before.map((item) => (
+            <div class="ba-item">
+              <>
+                <div class="ba-dot before" />
+                <p>{item}</p>
+              </>
+            </div>
+          ))
+        }
       </div>
       <div class="ba-arrow">→</div>
       <div class="ba-card">
         <span class="ba-label after">AFTER</span>
-        <div class="ba-item after">
-          <div class="ba-dot after"></div><p>
-            Guided multi-step campaign builder
-          </p>
-        </div>
-        <div class="ba-item after">
-          <div class="ba-dot after"></div><p>
-            Single source of truth for all campaigns
-          </p>
-        </div>
-        <div class="ba-item after">
-          <div class="ba-dot after"></div><p>
-            Minutes to launch, zero regressions
-          </p>
-        </div>
-        <div class="ba-item after">
-          <div class="ba-dot after"></div><p>
-            Full history and status visibility
-          </p>
-        </div>
+        {
+          caseStudy.beforeAfter.after.map((item) => (
+            <div class="ba-item after">
+              <>
+                <div class="ba-dot after" />
+                <p>{item}</p>
+              </>
+            </div>
+          ))
+        }
       </div>
     </div>
 
-    <div class="cs-body">
-      <span class="section-label">// screenshot</span>
-      <div class="screenshot-placeholder">
-        <div class="screenshot-icon">
-          <div class="screenshot-icon-inner"></div>
+    {
+      caseStudy.screenshot && (
+        <div class="cs-body">
+          <span class="section-label">// screenshot</span>
+          <div class="screenshot-placeholder">
+            <div class="screenshot-icon">
+              <div class="screenshot-icon-inner" />
+            </div>
+            <p class="screenshot-caption">{caseStudy.screenshot.caption}</p>
+            <p class="screenshot-desc">
+              {caseStudy.screenshot.description
+                .split("\n")
+                .map((line, i, arr) => (
+                  <>
+                    {line}
+                    {i < arr.length - 1 && <br />}
+                  </>
+                ))}
+            </p>
+          </div>
         </div>
-        <p class="screenshot-caption">redacted screenshot</p>
-        <p class="screenshot-desc">
-          campaign builder — step 2 of 4<br />details blurred for
-          confidentiality
-        </p>
-      </div>
-    </div>
+      )
+    }
 
     <div class="cs-body">
       <span class="section-label">// the hard parts</span>
-      <div class="hard-part">
-        <span class="hard-part-num">01</span>
-        <div>
-          <h4>Form state that actually held together</h4>
-          <p>
-            Campaign creation was a multi-step flow with deeply interdependent
-            fields — change the campaign type on step one and half of steps two
-            and three needed to adapt. Getting that state model right without
-            leaking complexity into the UI took more care than anything else on
-            this project.
-          </p>
-        </div>
-      </div>
-      <div class="hard-part">
-        <span class="hard-part-num">02</span>
-        <div>
-          <h4>Shaping the API, not just consuming it</h4>
-          <p>
-            There was no existing backend to build against. I worked closely
-            with the backend engineer to define the contracts — advocating for
-            shapes that made the UI straightforward rather than adapting to
-            whatever was easiest server-side. That collaboration made the
-            difference between a clean frontend and a messy one.
-          </p>
-        </div>
-      </div>
-      <div class="hard-part">
-        <span class="hard-part-num">03</span>
-        <div>
-          <h4>No prior art to lean on</h4>
-          <p>
-            Nothing like this existed internally. Every architectural decision
-            was a first draft — component structure, data flow, error handling
-            patterns. I kept it conservative: fewer abstractions, more readable
-            code. The next engineer who touches it should feel relief, not
-            dread.
-          </p>
-        </div>
-      </div>
+      {
+        caseStudy.hardParts.map((part, i) => (
+          <div class="hard-part">
+            <span class="hard-part-num">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h4>{part.title}</h4>
+              {Array.isArray(part.description) ? (
+                part.description.map((item) => <p>{item}</p>)
+              ) : (
+                <p>{part.description}</p>
+              )}
+            </div>
+          </div>
+        ))
+      }
     </div>
 
     <div class="cs-outcome">
