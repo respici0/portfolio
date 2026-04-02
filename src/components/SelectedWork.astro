@@ -1,12 +1,14 @@
 ---
-import { type Props, type Project } from '../data/selectedWork'
+import {  type Company, type Project } from '../data/selectedWork/selectedWork'
 import SectionLayout from "../layouts/SectionLayout.astro";
 import CaseStudy from "./CaseStudy.astro";
 import Chip from "./Chip.astro";
 
+interface Props {
+  companies: Company[]
+}
 
 const { companies } = Astro.props;
-
 ---
 
 <SectionLayout
@@ -15,15 +17,15 @@ const { companies } = Astro.props;
   id="work"
 >
   {
-    companies.map(({ tag, year, projects }) => (
+    companies.map(({ tag, year, projects }: Company) => (
       <div class="project-group">
         <div class="project-header">
           <span class="project-tag">{tag}</span>
           {year && <span class="project-year">{year}</span>}
         </div>
         {/* PROJECTS */}
-        {projects.map(
-          ({ projectId, title, description, links, tech }: Project) => (
+        {projects.map(({ projectId, title, description, links, tech }: Project) => (
+          <>
             <div class="project-item">
               <div class="project-info">
                 <div>
@@ -56,9 +58,9 @@ const { companies } = Astro.props;
                 ))}
               </div>
             </div>
-             <CaseStudy {projectId}/>
-          ),
-        )}
+            {links.some(({ type }) => type === "case study") && <CaseStudy {projectId} />}
+          </>
+        ))}
       </div>
     ))
   }

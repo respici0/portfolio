@@ -1,7 +1,4 @@
-export interface Props {
-    companies: Companies[];
-}
-
+import type { CaseStudy } from './caseStudies';
 
 export type Project = {
   projectId: string;
@@ -14,15 +11,16 @@ export type Project = {
   tech: string[];
 };
 
-export type Companies = {
+export type Company = {
   tag: "Fetch Rewards" | "Tensoriot" | "Eleveight" | "Personal Projects";
   year?: string;
   projects: Project[];
+
 };
 
 
 
-export const companies: Companies[] = [
+export const companies: Company[] = [
   {
     tag: "Fetch Rewards",
     year: "2022 - 2025",

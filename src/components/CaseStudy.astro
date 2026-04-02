@@ -1,9 +1,13 @@
 ---
+import { caseStudies } from "../data/selectedWork/caseStudies";
+
 interface Props {
   projectId: string;
 }
 
 const { projectId } = Astro.props;
+const caseStudy = caseStudies[projectId as keyof typeof caseStudies];
+if (!caseStudy) return;
 ---
 
 <div class="cs-wrapper">
@@ -11,8 +15,8 @@ const { projectId } = Astro.props;
     <div class="cs-meta-grid">
       <div class="cs-meta-card">
         <span class="cs-meta-label">ROLE</span>
-        <span class="cs-meta-value">Frontend engineer</span>
-        <span class="cs-meta-sub">sole frontend owner</span>
+        <span class="cs-meta-value">{caseStudy.meta.role.value}</span>
+        <span class="cs-meta-sub">{caseStudy.meta.role.sub}</span>
       </div>
       <div class="cs-meta-card">
         <span class="cs-meta-label">STACK</span>
@@ -145,16 +149,21 @@ const { projectId } = Astro.props;
 
     <div class="cs-outcome">
       <span class="section-label">// outcome</span>
-      <h3>
-        Campaign launch time went from days to minutes. The tool is still in
-        use.
-      </h3>
-      <p>
-        No regressions at go-live. The campaign managers who used it stopped
-        asking engineering for help with every launch — which was the whole
-        point.
-      </p>
+      <h3>{caseStudy.outcome.heading}</h3>
+      <p>{caseStudy.outcome.body}</p>
     </div>
+
+    {
+      caseStudy.thoughts && (
+        <div class="cs-thoughts">
+          <span class="section-label">// thoughts</span>
+          {caseStudy.thoughts.map((thoughts) => (
+            <p>{thoughts}</p>
+          ))}
+        </div>
+      )
+    }
+
     <div class="cs-close-row">
       <button class="cs-close-btn" data-project-id={projectId}>↑ close</button>
     </div>
@@ -202,10 +211,16 @@ const { projectId } = Astro.props;
 
   .cs-meta-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 8px;
     padding: 1.5rem 2rem;
     border-bottom: 0.5px solid var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .cs-meta-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   .cs-meta-card {
@@ -266,10 +281,18 @@ const { projectId } = Astro.props;
   /* before/after */
   .before-after {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+    grid-template-columns: 1fr;
     align-items: start;
     padding: 1.75rem 2rem;
     border-bottom: 0.5px solid var(--border);
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .before-after {
+      grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+      gap: 0;
+    }
   }
 
   .ba-card {
@@ -303,7 +326,7 @@ const { projectId } = Astro.props;
 
   .ba-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
     margin-bottom: 8px;
   }
@@ -316,7 +339,6 @@ const { projectId } = Astro.props;
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    margin-top: 6px;
     flex-shrink: 0;
   }
 
@@ -331,6 +353,7 @@ const { projectId } = Astro.props;
     font-size: 13px;
     color: var(--muted);
     line-height: 1.6;
+    margin: 0;
   }
 
   .ba-item.after p {
@@ -338,13 +361,19 @@ const { projectId } = Astro.props;
   }
 
   .ba-arrow {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     padding-top: 2.5rem;
     font-family: var(--font-mono);
     font-size: 14px;
     color: var(--accent);
+  }
+
+  @media (min-width: 768px) {
+    .ba-arrow {
+      display: flex;
+    }
   }
 
   /* screenshot placeholder */
@@ -394,9 +423,17 @@ const { projectId } = Astro.props;
   /* hard parts */
   .hard-part {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
     padding: 1rem 0;
     border-bottom: 0.5px solid var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .hard-part {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+    }
   }
 
   .hard-part:last-child {
@@ -434,7 +471,6 @@ const { projectId } = Astro.props;
     font-weight: 500;
     letter-spacing: -0.02em;
     line-height: 1.4;
-    max-width: 480px;
     margin-bottom: 0.75rem;
   }
 
@@ -442,13 +478,23 @@ const { projectId } = Astro.props;
     font-size: 14px;
     color: var(--muted);
     line-height: 1.75;
-    max-width: 480px;
+  }
+
+  .cs-thoughts {
+    border-top: 0.5px solid var(--border);
+    padding: 1.75rem 2rem;
+  }
+  .cs-thoughts p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
   }
 </style>
 
 <script>
   document.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest(".project-link");
+
     if (button instanceof HTMLElement) {
       const id = button.dataset.projectId;
       if (id) toggleCaseStudy(id);
@@ -456,9 +502,11 @@ const { projectId } = Astro.props;
   });
 
   document.addEventListener("click", (event) => {
+    console.log("event target", event.target);
     const button = (event.target as HTMLElement).closest(".cs-close-btn");
     if (button instanceof HTMLElement) {
       const id = button.dataset.projectId;
+      console.log("close case btn", id);
       if (id) closeCaseStudy(id);
     }
   });
@@ -478,7 +526,6 @@ const { projectId } = Astro.props;
     if (trigger) {
       trigger.textContent = "close ✕";
       const projectItem = trigger.closest(".project-item");
-      console.log("open", projectItem);
       if (projectItem) {
         const chips = projectItem.querySelectorAll(".chip");
         if (chips) chips.forEach((chip) => chip.classList.add("cs-open"));
@@ -492,13 +539,14 @@ const { projectId } = Astro.props;
     const trigger = document.getElementById(`${id}-trigger`);
     if (!panel) return;
 
+    console.log(panel);
     panel.classList.remove("open");
     if (trigger) {
       trigger.textContent = "case study ↗";
       const projectItem = trigger.closest(".project-item");
+
       if (projectItem) {
         const chips = projectItem.querySelectorAll(".chip");
-        console.log("chips", chips);
         if (chips) chips.forEach((chip) => chip.classList.remove("cs-open"));
         projectItem.classList.remove("cs-open");
         projectItem.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -511,4 +559,8 @@ const { projectId } = Astro.props;
     if (!panel) return;
     panel.classList.contains("open") ? closeCaseStudy(id) : openCaseStudy(id);
   }
+
+  // (window as any).openCaseStudy = openCaseStudy;
+  // (window as any).closeCaseStudy = closeCaseStudy;
+  // (window as any).toggleCaseStudy = toggleCaseStudy;
 </script>

@@ -34,10 +34,17 @@ const corePrinciples: string[] = [
 <style>
   .how-item {
     display: flex;
-    gap: 1.5rem;
-    align-items: center;
+    flex-direction: column;
     padding: 1rem 0;
     border-bottom: 0.5px solid var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .how-item {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+    }
   }
 
   .how-item:last-child {
