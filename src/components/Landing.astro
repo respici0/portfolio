@@ -7,11 +7,13 @@ import About from "./About.astro";
 import Stack from "./Stack.astro";
 import Connect from "./Connect.astro";
 import Footer from "./Footer.astro";
+
+import { companies } from "../data/selectedWork";
 ---
 
 <Nav />
 <Hero />
-<SelectedWork />
+<SelectedWork {companies} />
 <About />
 <HowIThink />
 <Stack />

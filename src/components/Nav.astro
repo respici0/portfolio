@@ -1,6 +1,7 @@
 ---
 import WhiteRabbit from "./icons/WhiteRabbit.astro";
 import BluePill from "./icons/BluePill.astro";
+import Typewriter from "./Typewriter.astro";
 
 type NavItem = {
   href: string;
@@ -35,18 +36,7 @@ const navItems: NavItem[] = [
   <div class="nav-inner">
     <div class="nav-logo-wrap">
       <span class="nav-logo" id="nav-logo-text">respicio.dev</span>
-      <span
-        class="nav-logo"
-        id="nav-typewriter"
-        style="display:none;color:#00ff41;align-items:center;gap:0;"
-      >
-        <span id="nav-tw-content"></span>
-        <span
-          class="tw-cursor"
-          style="height:0.9em;width:1.5px;background:#00ff41;transition:background 0.8s ease;"
-        >
-        </span>
-      </span>
+      <Typewriter type="nav" />
       <button id="rabbit-header" class="rabbit-btn">
         <span class="rabbit-svg">
           <WhiteRabbit />
