@@ -160,7 +160,7 @@ export const companies: Company[] = [
           },
           {
             type: "github",
-            url: "https://github.com/respici0/portfolio",
+            url: "https://github.com/respici0/next-steps",
           },
         ],
         tech: [
