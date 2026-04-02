@@ -164,7 +164,7 @@ export const companies: Company[] = [
           },
         ],
         tech: [
-          "Next.js",
+          "next.js",
           "typescript",
           "tailwind",
           "server actions",
