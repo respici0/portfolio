@@ -120,7 +120,7 @@ export type CaseStudy = {
     {
       title: "Getting back to the fundamentals",
       description:
-        "I've been writing Svelte and React for years. Going back to vanilla JS took some adjustment. Event delegation and manual DOM management are second nature once you're back in it, but that first week required unlearning some habits (and picking up new ones).",
+        "I've been writing Svelte and React for years. Going back to vanilla JS took some adjustment. Event delegation and manual DOM management are second nature once you're back in it, but it did require unlearning some habits (and picking up new ones).",
     },
     {
       title: "Vercel vs. SST/AWS + GitHub Actions",
@@ -146,7 +146,7 @@ export type CaseStudy = {
     "If I could do it again I'd build a backend to serve the selected work data. I wanted to ship fast so I hardcoded it for now, but the data schema is already defined. When I find the time it won't be a big lift.",
     "This isn't my first time using AI to speed up production. I've used it professionally, especially in the later half of my time at Fetch. What was different here was using Claude specifically as a UI/UX collaborator. I'd share what I was thinking, push back on ideas I didn't like, and Claude would take my direction and elevate it. It filled in my knowledge gaps in design without taking the wheel.",
     "The Matrix easter egg was the one place I leaned on Claude for actual code generation. I have no issue with that, but I did have to push back on the logic in a few spots where it was overcomplicating things. I also used Claude to sanity check my own functions and talk through decisions. That part felt natural.",
-    "The experience was genuinely fun. It felt less like prompting a tool and more like working with someone who happened to know a lot about design.",
+    "The experience was genuinely fun. It felt less like prompting a tool and more like working with someone who happened to know a lot about design. We had a great feedback loop going, and that back-and-forth is where AI is at its best.",
   ],
 };
 
