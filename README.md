@@ -6,3 +6,6 @@ I’ve been wanting to learn it and this was the perfect opportunity.
 
 In my // selected work section, you can read more about my collaboration with Claude. Together, we translated my conceptual thoughts and personal aesthetic into a cohesive visual design.
 
+### to do
+
+- Store selected works in MongoDB/Mongoose and serve them through a Node.js REST API
