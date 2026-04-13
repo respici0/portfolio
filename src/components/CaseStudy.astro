@@ -223,7 +223,6 @@ if (!caseStudy) return;
   .cs-body p {
     font-size: 14px;
     line-height: 1.8;
-    max-width: 560px;
   }
 
   .cs-body p + p {
@@ -491,6 +490,7 @@ if (!caseStudy) return;
         const chips = projectItem.querySelectorAll(".chip");
         if (chips) chips.forEach((chip) => chip.classList.add("cs-open"));
         projectItem.classList.add("cs-open");
+        (projectItem as HTMLElement).style.background = "var(--bg-white)";
       }
     }
   }
@@ -510,6 +510,7 @@ if (!caseStudy) return;
         const chips = projectItem.querySelectorAll(".chip");
         if (chips) chips.forEach((chip) => chip.classList.remove("cs-open"));
         projectItem.classList.remove("cs-open");
+        (projectItem as HTMLElement).style.background = "";
         projectItem.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
@@ -521,7 +522,17 @@ if (!caseStudy) return;
     panel.classList.contains("open") ? closeCaseStudy(id) : openCaseStudy(id);
   }
 
-  // (window as any).openCaseStudy = openCaseStudy;
-  // (window as any).closeCaseStudy = closeCaseStudy;
-  // (window as any).toggleCaseStudy = toggleCaseStudy;
+  document.addEventListener("open-case-study", (event) => {
+    const { id } = (event as CustomEvent).detail;
+    const trigger = document.getElementById(`${id}-trigger`);
+    if (trigger) {
+      const projectItem = trigger.closest(".project-item");
+      const target = projectItem ?? trigger;
+      const nav = document.querySelector("nav");
+      const navHeight = nav ? nav.getBoundingClientRect().height : 0;
+      const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+      window.scrollTo({ top, behavior: "smooth" });
+      setTimeout(() => openCaseStudy(id), 400);
+    }
+  });
 </script>

@@ -8,8 +8,7 @@ import Typewriter from "./Typewriter.astro";
 <footer class="footer-note">
   <a href="#" class="top-cta">↑ back to top</a>
   <p>
-    I collaborated with Claude on the visual direction for my portfolio. Read
-    about the process ↗
+    I collaborated with Claude on the visual direction for my portfolio. <button id="read-process-btn" class="read-process-btn">Read about the process ↗</button>
   </p>
   <div class="footer-note-wrapper">
     <span id="footer-static">
@@ -73,4 +72,22 @@ import Typewriter from "./Typewriter.astro";
   .top-cta:hover {
     color: var(--accent-hover);
   }
+
+  .read-process-btn {
+    all: unset;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    cursor: pointer;
+  }
+
+  .read-process-btn:hover {
+    color: var(--accent-hover);
+  }
 </style>
+
+<script>
+  document.getElementById("read-process-btn")?.addEventListener("click", () => {
+    document.dispatchEvent(new CustomEvent("open-case-study", { detail: { id: "portfolio" } }));
+  });
+</script>

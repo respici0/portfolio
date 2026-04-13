@@ -129,7 +129,7 @@ export const companies: Company[] = [
          "Although I have an eye for design, I'm not a UI/UX designer, so the collaboration with Claude on the design process (and some technical decisions) is worth reflecting on.",
         links: [
           {
-            type: "case study in progress",
+            type: "case study",
           },
           {
             type: "github",
