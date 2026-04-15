@@ -1,5 +1,6 @@
 ---
 import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 import MatrixTheme from "./MatrixTheme.astro";
 ---
 
@@ -152,3 +153,5 @@ import MatrixTheme from "./MatrixTheme.astro";
     <slot />
   </body>
 </html>
+
+<SpeedInsights />
