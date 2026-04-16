@@ -88,7 +88,7 @@ export type CaseStudy = {
     },
     stack: {
       value: "Astro + TypeScript",
-      sub: "Vercel · vanilla JS & CSS",
+      sub: "vercel · vanilla JS & CSS",
     },
     outcome: {
       value: "Portfolio that showcases me",
