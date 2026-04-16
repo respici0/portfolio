@@ -1,11 +1,11 @@
 ---
-import {  type Company, type Project } from '../data/selectedWork/selectedWork'
+import { type Company, type Project } from "../data/selectedWork/selectedWork";
 import SectionLayout from "../layouts/SectionLayout.astro";
 import CaseStudy from "./CaseStudy.astro";
 import Chip from "./Chip.astro";
 
 interface Props {
-  companies: Company[]
+  companies: Company[];
 }
 
 const { companies } = Astro.props;
@@ -24,43 +24,47 @@ const { companies } = Astro.props;
           {year && <span class="project-year">{year}</span>}
         </div>
         {/* PROJECTS */}
-        {projects.map(({ projectId, title, description, links, tech }: Project) => (
-          <>
-            <div class="project-item">
-              <div class="project-info">
-                <div>
-                  <p class="project-title">{title}</p>
-                  <p class="project-desc">{description}</p>
+        {projects.map(
+          ({ projectId, title, description, links, tech }: Project) => (
+            <>
+              <div class="project-item">
+                <div class="project-info">
+                  <div>
+                    <p class="project-title">{title}</p>
+                    <p class="project-desc">{description}</p>
+                  </div>
+                  <div class="links">
+                    {links.map(({ type, url }) =>
+                      type === "case study" ? (
+                        <button
+                          class="project-link"
+                          id={`${projectId}-trigger`}
+                          data-project-id={`${projectId}`}
+                        >
+                          case study ↗
+                        </button>
+                      ) : type === "case study in progress" ? (
+                        <span class="project-coming-soon">{type}</span>
+                      ) : (
+                        <a class="project-link" href={url} target="_blank">
+                          {type} ↗
+                        </a>
+                      ),
+                    )}
+                  </div>
                 </div>
-                <div class="links">
-                  {links.map(({ type, url }) =>
-                    type === "case study" ? (
-                      <button
-                        class="project-link"
-                        id={`${projectId}-trigger`}
-                        data-project-id={`${projectId}`}
-                      >
-                        case study ↗
-                      </button>
-                    ) : type === "case study in progress" ? (
-                      <span class="project-coming-soon">{type}</span>
-                    ) : (
-                      <a class="project-link" href={url} target="_blank">
-                        {type} ↗
-                      </a>
-                    ),
-                  )}
+                <div class="tech">
+                  {tech.map((value) => (
+                    <Chip variant="white" {value} />
+                  ))}
                 </div>
               </div>
-              <div class="tech">
-                {tech.map((value) => (
-                  <Chip variant="white" {value} />
-                ))}
-              </div>
-            </div>
-            {links.some(({ type }) => type === "case study") && <CaseStudy {projectId} />}
-          </>
-        ))}
+              {links.some(({ type }) => type === "case study") && (
+                <CaseStudy {projectId} />
+              )}
+            </>
+          ),
+        )}
       </div>
     ))
   }

@@ -9,6 +9,10 @@ import Connect from "./Connect.astro";
 import Footer from "./Footer.astro";
 
 import { companies } from "../data/selectedWork";
+
+const response = await fetch("http://localhost:3001/api");
+const data = await response.json();
+console.log(data);
 ---
 
 <Nav />
