@@ -1,137 +1,16 @@
 ---
-import { caseStudies } from "../data/selectedWork/caseStudies";
-
 interface Props {
   projectId: string;
 }
 
 const { projectId } = Astro.props;
-const caseStudy = caseStudies[projectId as keyof typeof caseStudies];
-if (!caseStudy) return;
 ---
 
 <div class="cs-wrapper">
-  <div class="case-study" id={`case-study-${projectId}`}>
-    <div class="cs-meta-grid">
-      <div class="cs-meta-card">
-        <span class="cs-meta-label">ROLE</span>
-        <span class="cs-meta-value">{caseStudy.meta.role.value}</span>
-        <span class="cs-meta-sub">{caseStudy.meta.role.sub}</span>
-      </div>
-      <div class="cs-meta-card">
-        <span class="cs-meta-label">STACK</span>
-        <span class="cs-meta-value">{caseStudy.meta.stack.value}</span>
-        <span class="cs-meta-sub">{caseStudy.meta.stack.sub}</span>
-      </div>
-      <div class="cs-meta-card">
-        <span class="cs-meta-label">OUTCOME</span>
-        <span class="cs-meta-value">{caseStudy.meta.outcome.value}</span>
-        <span class="cs-meta-sub">{caseStudy.meta.outcome.sub}</span>
-      </div>
-    </div>
-
-    <div class="cs-body">
-      <span class="section-label">// the problem</span>
-      {caseStudy.problem.map((p) => <p>{p}</p>)}
-    </div>
-
-    <div class="before-after">
-      <div class="ba-card">
-        <span class="ba-label before">BEFORE</span>
-        {
-          caseStudy.beforeAfter.before.map((item) => (
-            <div class="ba-item">
-              <>
-                <div class="ba-dot before" />
-                <p>{item}</p>
-              </>
-            </div>
-          ))
-        }
-      </div>
-      <div class="ba-arrow">→</div>
-      <div class="ba-card">
-        <span class="ba-label after">AFTER</span>
-        {
-          caseStudy.beforeAfter.after.map((item) => (
-            <div class="ba-item after">
-              <>
-                <div class="ba-dot after" />
-                <p>{item}</p>
-              </>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-
-    {
-      caseStudy.screenshot && (
-        <div class="cs-body">
-          <span class="section-label">// screenshot</span>
-          <div class="screenshot-placeholder">
-            <div class="screenshot-icon">
-              <div class="screenshot-icon-inner" />
-            </div>
-            <p class="screenshot-caption">{caseStudy.screenshot.caption}</p>
-            <p class="screenshot-desc">
-              {caseStudy.screenshot.description
-                .split("\n")
-                .map((line, i, arr) => (
-                  <>
-                    {line}
-                    {i < arr.length - 1 && <br />}
-                  </>
-                ))}
-            </p>
-          </div>
-        </div>
-      )
-    }
-
-    <div class="cs-body">
-      <span class="section-label">// the hard parts</span>
-      {
-        caseStudy.hardParts.map((part, i) => (
-          <div class="hard-part">
-            <span class="hard-part-num">{String(i + 1).padStart(2, "0")}</span>
-            <div>
-              <h4>{part.title}</h4>
-              {Array.isArray(part.description) ? (
-                part.description.map((item) => <p>{item}</p>)
-              ) : (
-                <p>{part.description}</p>
-              )}
-            </div>
-          </div>
-        ))
-      }
-    </div>
-
-    <div class="cs-outcome">
-      <span class="section-label">// outcome</span>
-      <h3>{caseStudy.outcome.heading}</h3>
-      <p>{caseStudy.outcome.body}</p>
-    </div>
-
-    {
-      caseStudy.thoughts && (
-        <div class="cs-thoughts">
-          <span class="section-label">// thoughts</span>
-          {caseStudy.thoughts.map((thoughts) => (
-            <p>{thoughts}</p>
-          ))}
-        </div>
-      )
-    }
-
-    <div class="cs-close-row">
-      <button class="cs-close-btn" data-project-id={projectId}>↑ close</button>
-    </div>
-  </div>
+  <div class="case-study" id={`case-study-${projectId}`}></div>
 </div>
 
-<style>
+<style is:global>
   .case-study {
     display: none;
     background: var(--bg-white);
@@ -462,25 +341,120 @@ if (!caseStudy) return;
   });
 
   document.addEventListener("click", (event) => {
-    console.log("event target", event.target);
     const button = (event.target as HTMLElement).closest(".cs-close-btn");
     if (button instanceof HTMLElement) {
       const id = button.dataset.projectId;
-      console.log("close case btn", id);
       if (id) closeCaseStudy(id);
     }
   });
 
-  function openCaseStudy(id: string) {
+  function renderCaseStudy(data: any): string {
+    const meta = `
+      <div class="cs-meta-grid">
+        <div class="cs-meta-card">
+          <span class="cs-meta-label">ROLE</span>
+          <span class="cs-meta-value">${data.meta.role.value}</span>
+          <span class="cs-meta-sub">${data.meta.role.sub}</span>
+        </div>
+        <div class="cs-meta-card">
+          <span class="cs-meta-label">STACK</span>
+          <span class="cs-meta-value">${data.meta.stack.value}</span>
+          <span class="cs-meta-sub">${data.meta.stack.sub}</span>
+        </div>
+        <div class="cs-meta-card">
+          <span class="cs-meta-label">OUTCOME</span>
+          <span class="cs-meta-value">${data.meta.outcome.value}</span>
+          <span class="cs-meta-sub">${data.meta.outcome.sub}</span>
+        </div>
+      </div>`;
+
+    const problem = `
+      <div class="cs-body">
+        <span class="section-label">// the problem</span>
+        ${data.problem.map((p: string) => `<p>${p}</p>`).join('')}
+      </div>`;
+
+    const beforeAfter = `
+      <div class="before-after">
+        <div class="ba-card">
+          <span class="ba-label before">BEFORE</span>
+          ${data.beforeAfter.before.map((item: string) => `
+            <div class="ba-item">
+              <div class="ba-dot before"></div>
+              <p>${item}</p>
+            </div>`).join('')}
+        </div>
+        <div class="ba-arrow">→</div>
+        <div class="ba-card">
+          <span class="ba-label after">AFTER</span>
+          ${data.beforeAfter.after.map((item: string) => `
+            <div class="ba-item after">
+              <div class="ba-dot after"></div>
+              <p>${item}</p>
+            </div>`).join('')}
+        </div>
+      </div>`;
+
+    const screenshot = data.screenshot ? `
+      <div class="cs-body">
+        <span class="section-label">// screenshot</span>
+        <div class="screenshot-placeholder">
+          <div class="screenshot-icon">
+            <div class="screenshot-icon-inner"></div>
+          </div>
+          <p class="screenshot-caption">${data.screenshot.caption}</p>
+          <p class="screenshot-desc">${data.screenshot.description}</p>
+        </div>
+      </div>` : '';
+
+    const hardParts = `
+      <div class="cs-body">
+        <span class="section-label">// the hard parts</span>
+        ${data.hardParts.map((part: any, i: number) => `
+          <div class="hard-part">
+            <span class="hard-part-num">${String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h4>${part.title}</h4>
+              ${Array.isArray(part.description)
+                ? part.description.map((d: string) => `<p>${d}</p>`).join('')
+                : `<p>${part.description}</p>`}
+            </div>
+          </div>`).join('')}
+      </div>`;
+
+    const outcome = `
+      <div class="cs-outcome">
+        <span class="section-label">// outcome</span>
+        <h3>${data.outcome.heading}</h3>
+        <p>${data.outcome.body}</p>
+      </div>`;
+
+    const thoughts = data.thoughts && data.thoughts.length ? `
+      <div class="cs-thoughts">
+        <span class="section-label">// thoughts</span>
+        ${data.thoughts.map((t: string) => `<p>${t}</p>`).join('')}
+      </div>` : '';
+
+    const closeRow = `
+      <div class="cs-close-row">
+        <button class="cs-close-btn" data-project-id="${data.projectId}">↑ close</button>
+      </div>`;
+
+    return meta + problem + beforeAfter + screenshot + hardParts + outcome + thoughts + closeRow;
+  }
+
+  async function openCaseStudy(id: string) {
     const panel = document.getElementById(`case-study-${id}`);
     const trigger = document.getElementById(`${id}-trigger`);
     if (!panel) return;
 
-    // ── mock fetch — comment out and replace with real endpoint ──
-    // fetch(`/api/case-studies/${id}`)
-    //   .then((res) => res.json())
-    //   .then((data) => console.log("case study data:", data));
-    // ─────────────────────────────────────────────────────────────
+    if (!panel.dataset.loaded) {
+      const res = await fetch(`/api/case-studies/${id}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      panel.innerHTML = renderCaseStudy(data);
+      panel.dataset.loaded = 'true';
+    }
 
     panel.classList.add("open");
     if (trigger) {
@@ -500,7 +474,6 @@ if (!caseStudy) return;
     const trigger = document.getElementById(`${id}-trigger`);
     if (!panel) return;
 
-    console.log(panel);
     panel.classList.remove("open");
     if (trigger) {
       trigger.textContent = "case study ↗";

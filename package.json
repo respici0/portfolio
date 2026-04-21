@@ -12,8 +12,14 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/vercel": "^10.0.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "astro": "^6.1.7"
+    "astro": "^6.1.7",
+    "mongoose": "^9.4.1"
+  },
+  "devDependencies": {
+    "@vercel/node": "^5.7.7",
+    "tsx": "^4.21.0"
   }
 }
